@@ -1,0 +1,86 @@
+.Game{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+  
+}
+.Game img{
+    width: 200px;
+  
+}
+.Game .card{
+    width:80%;
+    height: 350px;
+    background: rgb(39,46,115);
+    background: linear-gradient(90deg, rgba(39,46,115,1) 0%, rgba(66,79,170,1) 0%, rgba(108,118,226,1) 100%, rgba(0,97,241,1) 100%);
+    color: #fff;
+    border-radius: 10px;
+}
+.Allcard{
+    margin-top: 50px;
+   
+}
+.Allcard p{
+    font-size:40px;
+}
+.Allcard button,
+.reload{
+    width: 150px;
+    border: none;
+    outline: none;
+    background: linear-gradient(to bottom, #1b1c3f, #4a4e91);
+    padding: 7px;
+    margin-left: 10px;
+    color: #fff;
+    border-radius: 10px;
+    margin: 20px;
+    transition: 0.3s;
+    font-size: 16px;
+}
+.Allcard button:hover,
+.reload:hover{
+    background: linear-gradient(to bottom, #2c2f63, #5b67b7);
+    transform: scale(1.1);
+}
+ .end{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.end h1{
+    font-size: 35px;
+}
+.end p{
+    font-size: 20px;
+}
+@media(max-width:601px){
+    .Game img{
+        width: 120px;
+        margin-left: 35px;
+    }
+    .Allcard p{
+        font-size:20px;
+    }
+    .Allcard button{
+        margin: 8px;
+        font-size: 13px;
+    }
+    .Game .card{
+        height: 400px;
+    }
+}
+@media(max-width:281px){
+    .Allcard p{
+        font-size:15px;
+    }
+    .Allcard button{
+        margin: 8px;
+        font-size: 11px;
+    }
+    
+}
