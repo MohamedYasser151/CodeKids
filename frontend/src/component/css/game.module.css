@@ -1,0 +1,159 @@
+.game {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: Arial;
+  overflow: hidden;
+  margin-top: 70px;
+}
+
+/* 🎬 المشهد */
+.stage {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  height: 250px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.monster, .hero {
+  width: 140px;
+  animation: float 2s infinite ease-in-out;
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+
+/* ⚽ الكرة */
+.ball {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 60px;
+  transform: translate(-50%, -50%);
+}
+
+/* 🎯 الإجابة الصح → الوحش (left) */
+.toMonster {
+  animation: shootToMonster 0.8s forwards ease-out;
+}
+
+/* ❌ الإجابة الغلط → اللاعب (right) */
+.toPlayer {
+  animation: shootToPlayer 0.8s forwards ease-out;
+}
+
+@keyframes shootToMonster {
+  0% { transform: translate(-50%, -50%); }
+  100% { transform: translate(-280px, -60px) scale(1.2); }
+}
+
+@keyframes shootToPlayer {
+  0% { transform: translate(-50%, -50%); }
+  100% { transform: translate(280px, -60px) scale(1.2); }
+}
+
+/* الصحيح */
+
+
+@keyframes shootRight {
+  0% {
+    transform: translate(-50%, -50%);
+  }
+  100% {
+    transform: translate(300px, -60px) scale(1.2);
+  }
+}
+
+@keyframes shootLeft {
+  0% {
+    transform: translate(-50%, -50%);
+  }
+  100% {
+    transform: translate(-300px, -60px) scale(1.2);
+  }
+}
+
+.fireworks {
+  position: absolute;
+  top: 20%;
+  font-size: 60px;
+  animation: pop 1s ease-in-out;
+  z-index: 999;
+}
+
+@keyframes pop {
+  0% { transform: scale(0); opacity: 0; }
+  50% { transform: scale(1.5); opacity: 1; }
+  100% { transform: scale(1); opacity: 0; }
+}
+
+.shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-10px); }
+  40% { transform: translateX(10px); }
+  60% { transform: translateX(-10px); }
+  80% { transform: translateX(10px); }
+  100% { transform: translateX(0); }
+}
+/* 🧠 الكارد */
+.card {
+  width: 90%;
+  max-width: 700px;
+  background: rgba(255,255,255,0.9);
+  padding: 20px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.question {
+  font-size: 22px;
+  margin-bottom: 15px;
+}
+
+/* 🔘 الخيارات */
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.option {
+  min-width: 140px;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: #008cba;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.option:hover {
+  transform: scale(1.05);
+  background: #005f73;
+}
+/* 📊 معلومات */
+.info {
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+/* 🏁 نهاية اللعبة */
+.end {
+  color: #ff3b3b;
+}

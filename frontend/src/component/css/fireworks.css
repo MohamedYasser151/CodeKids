@@ -1,0 +1,40 @@
+.fireworks-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 9999;
+}
+
+/* كل قطعة نار */
+.particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: radial-gradient(circle, #fff, gold, orange, red);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  animation: explode 900ms ease-out forwards;
+}
+
+/* حركة انفجار حقيقية */
+@keyframes explode {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+
+  100% {
+    transform:
+      translate(
+        calc(-100px + 200px * var(--x)),
+        calc(-100px + 200px * var(--y))
+      )
+      scale(0);
+    opacity: 0;
+  }
+}

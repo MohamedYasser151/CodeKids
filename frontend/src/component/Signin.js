@@ -15,31 +15,69 @@ function Signin() {
   const [formData, setData] = useState({
     username: "",
     password: "",
+    code: "",
   });
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const loggedIn = Cookies.get('login');
-  //   if (loggedIn === 'true') {
-  //     setLogin(true);
-  //   }
-  // }, []);
+  useEffect(() => {
+    const loggedIn = Cookies.get('loginkids');
+    if (loggedIn === 'true') {
+      setLogin(true);
+    }
+  }, []);
+  
+
+  useEffect(() => {
+
+  const user = JSON.parse(
+    localStorage.getItem("userck")
+  );
+
+  if (!user) return;
+
+  if (Date.now() > user.expire) {
+
+    localStorage.removeItem("userck");
+    Cookies.remove("codeKidY");
+    Cookies.remove("username");
+
+    return;
+  }
+
+  navigate("/home");
+
+}, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8083/loginkids', formData);
-      const responseData = response.data;
-  
-      if (responseData && responseData.Message === "Logged in successfully") {
-        alert("Data is correct");
-        Cookies.set('loginkids', true, { expires: 7 * 24 });
-        Cookies.set('username', formData.username, { expires: 7 * 24 });
-        setLogin(true);
-        navigate("/home");
-      } else {
-        alert("Wrong password or email");
-      }
+    const response = await axios.post('http://localhost:8083/loginkids', formData);
+const responseData = response.data;
+
+if (responseData && response.data.success) {
+
+  alert("Data is correct");
+
+Cookies.set("codeKidY", responseData.code, { expires: 30 });
+Cookies.set("username", responseData.username, { expires: 30 });
+
+localStorage.setItem(
+  "userck",
+  JSON.stringify({
+    username: responseData.username,
+    code: responseData.code,
+    expire:
+      Date.now() +
+      30 * 24 * 60 * 60 * 1000
+  })
+);
+
+setLogin(true);
+navigate("/home");
+
+} else {
+  alert("Wrong password or username");
+}
       console.log(response);
     } catch (error) {
       console.error('Error during login:', error);
@@ -98,6 +136,19 @@ function Signin() {
                     onFocus={handleInputFocus}
                     onBlur={handleInputFocus2}
                   />
+              <input
+  type="text"
+  name="code"
+                      placeholder={t("code")}
+
+  value={formData.code}
+  onChange={(e) =>
+    setData({
+      ...formData,
+      code: e.target.value
+    })
+  }
+/>
                 </div>
                 <div className={styles.btn}>
                   <button type="submit" name="submit">{t("تسجيل الدخول")}</button>

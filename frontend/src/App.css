@@ -1,5 +1,15 @@
 .App {
   text-align: center;
+  font-family: 'Caveat', cursive;
+font-family: 'Courgette', cursive;
+font-family: 'Lobster', sans-serif;
+font-family: 'Lugrasimo', cursive;
+font-family: 'Noto Sans Arabic', sans-serif;
+}
+body{
+    width:100%;
+  min-height:100vh;
+  background: linear-gradient(135deg,#1e3c72,#2a5298);
 }
 
 .App-logo {
@@ -21,14 +31,12 @@
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  /* color: white; */
 }
 
 .App-link {
   color: #61dafb;
 }
-
-
 
 @keyframes App-logo-spin {
   from {
@@ -39,6 +47,8 @@
   }
 }
 
-a{
-  text-decoration: none;
+
+.voltage-button{
+  width: 200px;
+  margin: 10px 0 0 50px ;
 }

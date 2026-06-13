@@ -18,10 +18,41 @@ import './App.css';
 
 
 const Home = lazy(()=> import('./component/Home.js'))
+const Navbars = lazy(()=> import('./component/Navbars.js'))
+const Game = lazy(()=> import('./component/game.js'))
+
+const Monthly = lazy(()=> import('./component/Monthly.js'))
+const AdminAdd = lazy(()=> import('./component/admin/Admin.js'))
+const Weekly = lazy(()=> import('./component/Weekly.js'))
+const Games = lazy(()=> import('./component/Game2.js'))
 const Level1 = lazy(()=> import('./component/levels15/levels/one.js'))
 const Level2 = lazy(()=> import('./component/levels15/levels/two.js'))
 const Levels = lazy (()=>import('./component/Levels.js'));
 const Testone = lazy (()=>import('./component/tests/testshtml/testone.js'));
+const Test1 = lazy (()=>import('./component/tests/testshtml/test1.js'));
+const Test2 = lazy (()=>import('./component/tests/testshtml/test2.js'));
+
+
+
+
+
+
+
+const VideoPage = lazy (()=>import('./component/VideoPage.js'));
+const VideoPlayer = lazy (()=>import('./component/VideoPlayer.js'));
+const UserProtectedRoute = lazy (()=>import('./component/UserProtectedRoute.js'));
+
+
+const AdminVideo = lazy (()=>import('./component/admin/adminVideo.js'));
+
+const AdminVideosList = lazy (()=>import('./component/admin/AdminVideosList.js'));
+const AdminUsers = lazy (()=>import('./component/admin/AdminUsers.js'));
+const AdminProtected = lazy (()=>import('./component/admin/AdminProtected.js'));
+const HomeAdmin = lazy (()=>import('./component/admin/HomeAdmin.js'));
+const LoginAdmin = lazy (()=>import('./component/admin/loginAdmin.js'));
+
+
+
 
 // const IT = lazy(()=> import('./component/it/Employee.js'))
 // const  Chatbot = lazy(()=> import('./component/chatbot/chat.js'))
@@ -45,7 +76,176 @@ const App = ()=>{
         <Routes>
       
         <Route path="/" element={<Signin/>}/>
-        <Route path="/home" element={<Home/>}/>
+
+
+          <Route path="/Games" element={
+           <React.Suspense fallback={<Loading/>}>
+          <Navbars/>
+          <UserProtectedRoute>
+
+          <Games/>
+                    </UserProtectedRoute>
+
+          </React.Suspense>
+          }/>
+
+          <Route path="/videos/:course" element={
+           <React.Suspense fallback={<Loading/>}>
+          <Navbars/>
+          <UserProtectedRoute>
+
+          <VideoPage/>
+                    </UserProtectedRoute>
+
+          </React.Suspense>
+          }/>
+
+
+
+
+
+
+
+          <Route path="/Courses" element={
+           <React.Suspense fallback={<Loading/>}>
+          <Navbars/>
+          <UserProtectedRoute>
+
+          <VideoPlayer/>
+                    </UserProtectedRoute>
+
+          </React.Suspense>
+          }/>
+
+         
+      
+
+      <Route path="/Monthly" element={
+           <React.Suspense fallback={<Loading/>}>
+          <Navbars/>
+          <UserProtectedRoute>
+
+          <Monthly/>
+                    </UserProtectedRoute>
+
+          </React.Suspense>
+          }/>
+
+      <Route path="/Weekly" element={
+           <React.Suspense fallback={<Loading/>}>
+          <Navbars/>
+          <UserProtectedRoute>
+
+          <Weekly/>
+                    </UserProtectedRoute>
+
+          </React.Suspense>
+          }/>
+
+
+
+
+
+
+{/* admin */}
+
+
+          <Route path="/AdminVideosList" element={
+           <React.Suspense fallback={<Loading/>}>
+          <Navbars/>
+          <AdminProtected>
+
+          <AdminVideosList/>
+                    </AdminProtected>
+
+          </React.Suspense>
+          }/>
+
+          <Route path="/AdminUsers" element={
+           <React.Suspense fallback={<Loading/>}>
+          <Navbars/>
+          <AdminProtected>
+
+          <AdminUsers/>
+                    </AdminProtected>
+
+          </React.Suspense>
+          }/>
+
+
+
+ <Route path="/adminVideo" element={
+           <React.Suspense fallback={<Loading/>}>
+          <Navbars/>
+          <AdminProtected>
+
+          <AdminVideo/>
+                    </AdminProtected>
+
+          </React.Suspense>
+          }/>
+
+      <Route path="/AdminAdd" element={
+           <React.Suspense fallback={<Loading/>}>
+          <Navbars/>
+          <AdminProtected>
+
+          <AdminAdd/>
+                    </AdminProtected>
+
+          </React.Suspense>
+          }/>
+
+      <Route path="/LoginAdmin" element={
+           <React.Suspense fallback={<Loading/>}>
+
+          <LoginAdmin/>
+          </React.Suspense>
+          }/>
+
+     
+
+      <Route path="/HomeAdmin" element={
+           <React.Suspense fallback={<Loading/>}>
+          <AdminProtected>
+          <HomeAdmin/>
+          </AdminProtected>
+
+          </React.Suspense>
+          }/>
+
+
+
+
+
+
+{/* admin end*/}
+
+
+
+
+
+
+
+
+
+
+
+        <Route path="/home" element={
+           <React.Suspense fallback={<Loading/>}>
+          {/* <Navbars/> */}
+          <UserProtectedRoute>
+          <Home/>
+          </UserProtectedRoute>
+          </React.Suspense>
+          }/>
+        <Route path="/Game" element={
+           <React.Suspense fallback={<Loading/>}>
+          <Navbars/>
+
+          <Game/>
+          </React.Suspense>
+          }/>
       
 
          {/* <Route path="*" element={
@@ -91,6 +291,20 @@ const App = ()=>{
           <React.Suspense fallback={<Loading/>}>
             {/* <NavbarRam/> */}
             <Testone/>
+            {/* <FooterRma2/> */}
+            </React.Suspense>
+        }/>
+     <Route path='/test1' element={
+          <React.Suspense fallback={<Loading/>}>
+            {/* <NavbarRam/> */}
+            <Test1/>
+            {/* <FooterRma2/> */}
+            </React.Suspense>
+        }/>
+     <Route path='/test2' element={
+          <React.Suspense fallback={<Loading/>}>
+            {/* <NavbarRam/> */}
+            <Test2/>
             {/* <FooterRma2/> */}
             </React.Suspense>
         }/>
