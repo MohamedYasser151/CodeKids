@@ -10,7 +10,7 @@ const streamifier = require("streamifier");
 const cloudinary = require("./cloudinary");
 
 const app = express();
-const port = 8083;
+const port = 8083 || process.env.PORT;
 
 app.use(cors({ origin: "http://localhost:3000" }));
 app.use(express.json());
@@ -18,12 +18,22 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 // ================= DB =================
-const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "codekids",
-});
+// const db = mysql.createConnection({
+//   host: "localhost",
+//   user: "root",
+//   password: "",
+//   database: "codekids",
+// });
+const db = mysql.createPool({
+    host:process.env.DB_HOST,
+    user:process.env.DB_USERNAME,
+    password:process.env.DB_PASSWORD,
+    database:process.env.DB_DBNAME,
+    waitForConnections:true,
+    connectionLimit:10,
+    queueLimit:0
+})
+
 
 // ================= SIGNUP =================
 app.post("/signup", (req, res) => {
