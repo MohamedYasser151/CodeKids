@@ -12,7 +12,7 @@ export default function VideoPage() {
 
   useEffect(() => {
 
-    axios.get(`http://localhost:8083/videos/${course}`)
+    axios.get(`https://code-kids-ezwr.vercel.app/videos/${course}`)
       .then(res => setVideos(res.data))
       .catch(err => console.log(err));
 

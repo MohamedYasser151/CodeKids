@@ -8,7 +8,7 @@ export default function Weekly() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8083/weekly")
+      .get("https://code-kids-ezwr.vercel.app/weekly")
       .then((res) => setData(res.data))
       .catch((err) => console.log(err));
   }, []);

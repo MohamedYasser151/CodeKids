@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:8083"
+  baseURL: "https://code-kids-ezwr.vercel.app"
 });
 
 export const getWeekly = () => API.get("/weekly");

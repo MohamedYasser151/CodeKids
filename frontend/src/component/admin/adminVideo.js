@@ -24,7 +24,7 @@ export default function UploadVideo() {
       formData.append("video", video);
 
       await axios.post(
-        "http://localhost:8083/videos/upload",
+        "https://code-kids-ezwr.vercel.app/videos/upload",
         formData
       );
 

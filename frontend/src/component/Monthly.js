@@ -8,7 +8,7 @@ export default function Monthly() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8083/monthly")
+      .get("https://code-kids-ezwr.vercel.app/monthly")
       .then((res) => setData(res.data))
       .catch((err) => console.log(err));
   }, []);

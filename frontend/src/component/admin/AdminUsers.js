@@ -8,7 +8,7 @@ export default function AdminUsers() {
 
   const loadUsers = async () => {
     const res = await axios.get(
-      "http://localhost:8083/admin/users"
+      "https://code-kids-ezwr.vercel.app/admin/users"
     );
 
     setUsers(res.data);
@@ -23,7 +23,7 @@ export default function AdminUsers() {
     if (!window.confirm("Delete User?")) return;
 
     await axios.delete(
-      `http://localhost:8083/admin/users/${id}`
+      `https://code-kids-ezwr.vercel.app/admin/users/${id}`
     );
 
     loadUsers();

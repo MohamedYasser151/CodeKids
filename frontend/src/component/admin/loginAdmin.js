@@ -18,7 +18,7 @@ export default function LoginAdmin() {
     try {
 
       const res = await axios.post(
-        "http://localhost:8083/admin/login",
+        "https://code-kids-ezwr.vercel.app/admin/login",
         {
           username,
           password

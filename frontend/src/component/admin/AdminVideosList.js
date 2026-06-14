@@ -18,7 +18,7 @@ export default function AdminVideosList() {
 
     const res =
       await axios.get(
-        "http://localhost:8083/admin/videos"
+        "https://code-kids-ezwr.vercel.app/admin/videos"
       );
 
     setVideos(res.data);
@@ -34,7 +34,7 @@ const deleteVideo = async (id) => {
   try {
 
     await axios.delete(
-      `http://localhost:8083/admin/videos/${id}`
+      `https://code-kids-ezwr.vercel.app/admin/videos/${id}`
     );
 
     loadVideos();
@@ -51,7 +51,7 @@ const deleteVideo = async (id) => {
   async()=>{
 
     await axios.put(
-      `http://localhost:8083/admin/videos/${editingVideo.id}`,
+      `https://code-kids-ezwr.vercel.app/admin/videos/${editingVideo.id}`,
       editingVideo
     );
 

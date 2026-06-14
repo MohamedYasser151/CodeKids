@@ -38,7 +38,7 @@ export default function UserProtectedRoute({
       try {
 
         const res = await axios.get(
-          `http://localhost:8083/check-user/${user.code}`
+          `https://code-kids-ezwr.vercel.app/check-user/${user.code}`
         );
 
         if (res.data.success) {

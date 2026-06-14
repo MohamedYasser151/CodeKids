@@ -12,7 +12,7 @@ export default function Admin() {
     try{
 
       const res = await axios.post(
-        "http://localhost:8083/score",
+        "https://code-kids-ezwr.vercel.app/score",
         {
           code,
           score:Number(score)
