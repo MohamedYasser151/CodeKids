@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-const mysql = require("mysql");
+const mysql = require("mysql2");
 const bcrypt = require("bcrypt");
 
 const multer = require("multer");
@@ -33,6 +33,15 @@ const db = mysql.createPool({
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
+});
+
+db.getConnection((err, conn) => {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log("Database Connected");
+    conn.release();
+  }
 });
 
 // ================= SIGNUP =================
