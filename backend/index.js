@@ -25,15 +25,15 @@ app.use(cookieParser());
 //   database: "codekids",
 // });
 const db = mysql.createPool({
-    host:process.env.DB_HOST,
-    user:process.env.DB_USERNAME,
-    password:process.env.DB_PASSWORD,
-    database:process.env.DB_DBNAME,
-    waitForConnections:true,
-    connectionLimit:10,
-    queueLimit:0
-})
-
+    host: process.env.MYSQLHOST,
+    user: process.env.MYSQLUSER,
+    password: process.env.MYSQLPASSWORD,
+    database: process.env.MYSQLDATABASE,
+    port: process.env.MYSQLPORT,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
+});
 
 // ================= SIGNUP =================
 app.post("/signup", (req, res) => {
