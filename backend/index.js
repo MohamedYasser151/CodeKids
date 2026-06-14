@@ -24,6 +24,12 @@ app.use(cookieParser());
 //   password: "",
 //   database: "codekids",
 // });
+console.log({
+  host: process.env.MYSQLHOST,
+  port: process.env.MYSQLPORT,
+  user: process.env.MYSQLUSER,
+  database: process.env.MYSQLDATABASE
+});
 const db = mysql.createPool({
     host: process.env.MYSQLHOST,
     user: process.env.MYSQLUSER,
