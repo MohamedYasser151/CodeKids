@@ -12,7 +12,16 @@ const cloudinary = require("./cloudinary");
 const app = express();
 const port = process.env.PORT || 8083;
 
-app.use(cors({ origin: "http://localhost:3000" }));
+
+app.use(cors({
+  origin: [
+    "https://code-kids-nine.vercel.app",
+    "http://localhost:3000"
+  ],
+  credentials: true
+}));
+
+app.use(express.json());
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(cookieParser());
