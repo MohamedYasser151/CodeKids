@@ -161,17 +161,6 @@ navigate("/home");
       </div>
       
     </div>
-    {/* <NavLink className="btnlink" to="/home">
-<button>
-    
-    <span class="circle1"></span>
-    <span class="circle2"></span>
-    <span class="circle3"></span>
-    <span class="circle4"></span>
-    <span class="circle5"></span>
-    <span class="text">{t("الرئيسية")}</span>
-</button>
-</NavLink> */}
     </>
   );
 }

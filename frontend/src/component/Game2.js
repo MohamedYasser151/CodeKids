@@ -175,41 +175,53 @@ function Game() {
       <div className="layout">
 
         {/* GRID */}
-        <div
-          className="grid"
-          style={{ gridTemplateColumns: `repeat(${size}, 70px)` }}
-        >
-          {[...Array(size * size)].map((_, i) => {
-            const x = i % size;
-            const y = Math.floor(i / size);
+       {/* GRID */}
+<div
+  className="grid"
+  style={{
+    width: size >= 8 ? "95vw" : "90vw",
+    maxWidth: "650px",
+    gridTemplateColumns: `repeat(${size}, 1fr)`
+  }}
+>
+  {[...Array(size * size)].map((_, i) => {
+    const x = i % size;
+    const y = Math.floor(i / size);
 
-            const isRobot = robot.x === x && robot.y === y;
-            const isGoal = goal.x === x && goal.y === y;
+    const isRobot = robot.x === x && robot.y === y;
+    const isGoal = goal.x === x && goal.y === y;
 
-            const isWall = currentLevel.walls.some(w => w.x === x && w.y === y);
-            const isSnake = currentLevel.snakes.some(s => s.x === x && s.y === y);
-            const isTrap = currentLevel.traps.some(t => t.x === x && t.y === y);
+    const isWall = currentLevel.walls.some(
+      w => w.x === x && w.y === y
+    );
 
-            // ⭐ مهم: حل مشكلة نفس الخلية
-            let cellType = "";
+    const isSnake = currentLevel.snakes.some(
+      s => s.x === x && s.y === y
+    );
 
-            if (isRobot) cellType = "robot";
-            else if (isGoal) cellType = "goal";
-            else if (isWall) cellType = "wall";
-            else if (isSnake) cellType = "snake";
-            else if (isTrap) cellType = "trap";
+    const isTrap = currentLevel.traps.some(
+      t => t.x === x && t.y === y
+    );
 
-            return (
-              <div key={i} className={`cell ${cellType}`}>
-                {isWall && "🧱"}
-                {isSnake && "🐍"}
-                {isTrap && "💥"}
-                {isGoal && "⭐"}
-                {isRobot && "🤖"}
-              </div>
-            );
-          })}
-        </div>
+    let cellType = "";
+
+    if (isRobot) cellType = "robot";
+    else if (isGoal) cellType = "goal";
+    else if (isWall) cellType = "wall";
+    else if (isSnake) cellType = "snake";
+    else if (isTrap) cellType = "trap";
+
+    return (
+      <div key={i} className={`cell ${cellType}`}>
+        {isWall && "🧱"}
+        {isSnake && "🐍"}
+        {isTrap && "💥"}
+        {isGoal && "⭐"}
+        {isRobot && "🤖"}
+      </div>
+    );
+  })}
+</div>
 
         {/* EDITOR */}
         <div className="editor">

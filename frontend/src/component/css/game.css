@@ -84,19 +84,23 @@
 /* ===========================
    GRID
 =========================== */
+/* ===========================
+   GRID
+=========================== */
 
 .grid{
-  background:
-  rgba(255,255,255,.15);
+  width:90vw;
+  max-width:650px;
+
+  background:rgba(255,255,255,.15);
 
   backdrop-filter:blur(10px);
 
   padding:15px;
+
   border-radius:25px;
 
   display:grid;
-  grid-template-columns:
-  repeat(5,minmax(55px,80px));
 
   gap:8px;
 
@@ -109,6 +113,8 @@
 =========================== */
 
 .cell{
+  width:100%;
+
   aspect-ratio:1;
 
   background:white;
@@ -119,7 +125,8 @@
   justify-content:center;
   align-items:center;
 
-  font-size:22px;
+  font-size:clamp(16px,3vw,28px);
+
   font-weight:bold;
 
   transition:.3s;
@@ -319,33 +326,60 @@
   }
 
 }
-
 /* ===========================
    MOBILE
 =========================== */
 
-@media(max-width:768px){
+@media (max-width:768px){
+
+  .game-container{
+    padding:10px;
+  }
 
   .layout{
     flex-direction:column;
     align-items:center;
+    gap:20px;
   }
 
   .grid{
-    grid-template-columns:
-    repeat(5,minmax(45px,60px));
-  }
-
-  .cell{
-    font-size:18px;
+    width:95vw;
+    padding:10px;
+    gap:5px;
   }
 
   .editor{
-    width:100%;
+    width:95vw;
   }
 
   .editor textarea{
-    height:220px;
+    height:180px;
   }
 
+  .message{
+    font-size:18px;
+  }
+}
+
+/* للشاشات الصغيرة جداً */
+
+@media (max-width:450px){
+
+  .grid{
+    width:98vw;
+    padding:5px;
+    gap:3px;
+  }
+
+  .cell{
+    font-size:14px;
+  }
+
+  .game-title{
+    font-size:28px;
+  }
+
+  .level-title{
+    font-size:20px;
+  }
 }
