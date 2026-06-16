@@ -107,7 +107,7 @@
   80% { transform: translateX(10px); }
   100% { transform: translateX(0); }
 }
-/* 🧠 الكارد */
+/*  الكارد */
 .card {
   width: 90%;
   max-width: 700px;
@@ -117,11 +117,41 @@
   text-align: center;
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
+.card svg{
+  margin:0 5px;
+  color:#4fc3f7;
+}
+
+.end svg{
+  color:#ffd54f;
+}
+
+.option svg{
+  margin-right:8px;
+}
+.restartBtn{
+  margin-top:20px;
+  padding:12px 20px;
+  border:none;
+  border-radius:12px;
+  background:linear-gradient(135deg,#00c853,#00e676);
+  color:white;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.restartBtn:hover{
+  transform:scale(1.05);
+  background:linear-gradient(135deg,#00e676,#00c853);
+}
 
 .question {
   font-size: 22px;
   margin-bottom: 15px;
 }
+
 
 /* 🔘 الخيارات */
 .options {

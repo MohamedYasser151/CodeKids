@@ -4,7 +4,17 @@ import Fireworks from "./Fireworks.js";
 import img from "./image/fight.png";
 import img1 from "./image/monster.png";
 import ballImg from "./image/ball.png";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faGamepad,
+  faHeart,
+  faStar,
+  faFlagCheckered,
+  faTrophy,
+  faXmark,
+  faCheck,
+  faRotateRight 
+} from "@fortawesome/free-solid-svg-icons";
 function shuffle(array) {
   return [...array].sort(() => Math.random() - 0.5);
 }
@@ -22,7 +32,6 @@ function Game() {
   const [fireworks, setFireworks] = useState(false);
   const [effect, setEffect] = useState(null);
 
-  // 🎯 أسئلة منظمة حسب المستوى
   const levels = {
     1: [
       { q: "ما هو وسم الصورة في HTML؟", a: "<img>", o: ["<img>", "<div>", "<p>", "<h1>"] },
@@ -115,6 +124,20 @@ function Game() {
     }
   };
 
+
+
+  const restartGame = () => {
+  setLevel(1);
+  setIndex(0);
+  setScore(0);
+  setAttempts(3);
+  setGameOver(false);
+  setAnswered(false);
+  setShoot(null);
+  setEffect(null);
+  setFireworks(false);
+};
+
   return (
     <div className={`${style.game} ${effect === "lose" ? style.shake : ""}`}>
       <Fireworks run={fireworks} />
@@ -130,24 +153,38 @@ function Game() {
 
       <div className={style.card}>
         {gameOver ? (
-          <div className={style.end}>
-            <h1>🎮 Finished</h1>
-            <p>Score: {score}</p>
-          </div>
+<div className={style.end}>
+  <h1>
+    <FontAwesomeIcon icon={faTrophy} /> Finished
+  </h1>
+
+  <p>
+    <FontAwesomeIcon icon={faStar} /> Score: {score}
+  </p>
+
+<button className={style.restartBtn} onClick={restartGame}>
+  <FontAwesomeIcon icon={faRotateRight} /> Restart Game
+</button>
+</div>
         ) : (
           <>
-            <h2>Level {level}</h2>
+<h2>
+  <FontAwesomeIcon icon={faGamepad} /> Level {level}
+</h2>
             <h3>{current.q}</h3>
 
             <div className={style.options}>
               {shuffle(current.o).map((op, i) => (
                 <button key={i} onClick={() => handleAnswer(op)} className={style.option}>
-                  {op}
+                 {op}
                 </button>
               ))}
             </div>
 
-            <p>⭐ {score} | ❤️ {attempts}</p>
+<p>
+  <FontAwesomeIcon icon={faStar} /> {score} |
+  <FontAwesomeIcon icon={faHeart} /> {attempts}
+</p>
           </>
         )}
       </div>

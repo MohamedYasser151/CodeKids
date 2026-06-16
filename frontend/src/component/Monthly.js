@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faTrophy,
+  faMedal,
+  faCrown,
+  faStar
+} from "@fortawesome/free-solid-svg-icons";
 import "./css/podium.css";
 
 export default function Monthly() {
@@ -20,9 +27,10 @@ export default function Monthly() {
   return (
     <div className="ranking-page">
 
-      <h1 className="ranking-title">
-        🌟 {monthName} Champions
-      </h1>
+<h1 className="ranking-title">
+  <FontAwesomeIcon icon={faStar} className="title-icon" />
+  {monthName} Champions
+</h1>
 
       <div className="podium">
 
@@ -30,9 +38,9 @@ export default function Monthly() {
         {data[1] && (
           <div className="winner-card second">
 
-            <div className="medal">
-              🥈
-            </div>
+ <div className="medal second-icon">
+  <FontAwesomeIcon icon={faMedal} />
+</div>
 
             <div className="child-name">
               {data[1].name}
@@ -48,10 +56,9 @@ export default function Monthly() {
         {/* FIRST */}
         {data[0] && (
           <div className="winner-card first">
-
-            <div className="trophy">
-              🏆
-            </div>
+<div className="trophy first-icon">
+  <FontAwesomeIcon icon={faCrown} />
+</div>
 
             <div className="child-name">
               {data[0].name}
@@ -67,10 +74,10 @@ export default function Monthly() {
         {/* THIRD */}
         {data[2] && (
           <div className="winner-card third">
-
-            <div className="medal">
-              🥉
-            </div>
+            
+<div className="medal third-icon">
+  <FontAwesomeIcon icon={faMedal} />
+</div>
 
             <div className="child-name">
               {data[2].name}

@@ -29,7 +29,32 @@
   color:white;
   font-size:clamp(35px,6vw,60px);
 
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:15px;
+
   animation:pop 2s infinite;
+}
+
+.logoIcon{
+  color:#9261e8;
+
+  filter:
+    drop-shadow(0 0 10px rgba(146, 161, 236, 0.7));
+
+  animation:
+    rocketFloat 2s ease-in-out infinite;
+}
+
+@keyframes rocketFloat{
+  0%,100%{
+    transform:translateY(0);
+  }
+
+  50%{
+    transform:translateY(-8px);
+  }
 }
 
 .sub{
@@ -266,6 +291,102 @@
   opacity:0.9;
 }
 
+
+
+.sectionTitle{
+  text-align:center;
+  color:white;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:12px;
+
+  margin-bottom:25px;
+}
+
+.titleIcon{
+  color:#ff6b00;
+
+  filter:
+    drop-shadow(0 0 10px rgba(255,107,0,.8));
+
+  animation:
+    firePulse 1.5s infinite;
+}
+.bulbIcon{
+  color:#ffd43b;
+  animation: bulbBlink 1.5s infinite;
+}
+
+@keyframes bulbBlink{
+
+  0%,100%{
+    opacity:1;
+
+    filter:
+      drop-shadow(0 0 8px #ffd43b)
+      drop-shadow(0 0 20px #ffd43b);
+  }
+
+  20%{
+    opacity:.8;
+  }
+
+  25%{
+    opacity:.4;
+  }
+
+  30%{
+    opacity:1;
+  }
+
+  60%{
+    opacity:.9;
+  }
+
+}
+.globeIcon{
+  color:#4fc3f7;
+
+  margin-right:12px;
+
+  animation:
+    globeSpin 5s linear infinite;
+
+  filter:
+    drop-shadow(0 0 10px #4fc3f7)
+    drop-shadow(0 0 25px #4fc3f7);
+}
+
+@keyframes globeSpin{
+
+  0%{
+    transform:rotate(0deg) scale(1);
+  }
+
+  50%{
+    transform:rotate(180deg) scale(1.15);
+  }
+
+  100%{
+    transform:rotate(360deg) scale(1);
+  }
+
+}
+
+@keyframes firePulse{
+
+  0%,100%{
+    transform:scale(1);
+  }
+
+  50%{
+    transform:scale(1.2);
+  }
+
+}
+
 /* ===== GLASS GLOW EFFECT ===== */
 .glow{
   position:absolute;
@@ -284,6 +405,74 @@
   transform:rotate(25deg);
 
   animation: shine 3s linear infinite;
+}
+.cardIcon{
+  font-size:42px;
+
+  margin-bottom:15px;
+
+  color:#2a5298;
+
+  transition:.4s;
+}
+
+.tipCard:hover .cardIcon{
+  transform:
+    scale(1.25)
+    rotate(8deg);
+}
+
+.tipCard strong{
+  display:block;
+  margin-bottom:10px;
+  font-size:18px;
+  color:#222;
+}
+
+.cardIcon{
+  font-size:42px;
+  color:#2a5298;
+  margin-bottom:15px;
+  transition:.3s;
+}
+
+
+.infoCard:hover .cardIcon{
+  transform:scale(1.2);
+}
+
+.tipCard:hover .cardIcon{
+  transform:scale(1.2);
+}
+
+.socialIcon{
+  width:75px;
+  height:75px;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  font-size:42px;
+
+  border-radius:50%;
+
+  background:rgba(255,255,255,.2);
+
+  backdrop-filter:blur(10px);
+
+  z-index:2;
+}
+
+.tiktok{
+  background:
+  linear-gradient(
+    135deg,
+    #000000,
+    #111111,
+    #25f4ee,
+    #fe2c55
+  );
 }
 
 /* INSTAGRAM */

@@ -1,49 +1,143 @@
+.video-page{
+  min-height:100vh;
+  padding:20px;
 
-.video-layout {
-  display: flex;
-  gap: 20px;
-  padding: 20px;
-  margin-top: 100px;
+  background:linear-gradient(135deg,#1e3c72,#2a5298);
+  font-family:Arial;
 }
 
-/* القائمة */
-.video-list {
-  width: 30%;
-  background: #f5f7ff;
-  border-radius: 10px;
-  padding: 10px;
-  
+/* TITLE */
+.page-title{
+  text-align:center;
+  color:white;
+
+  font-size:28px;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+
+  margin:20px 0;
 }
 
-.video-item {
-  padding: 10px;
-  margin-bottom: 10px;
-  background: white;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.3s;
+/* LAYOUT */
+.video-layout{
+  display:flex;
+  gap:25px;
+
+  max-width:1200px;
+  margin:auto;
+
+  margin-top:20px;
 }
 
-.video-item:hover {
-  background: #3498db;
-  color: white;
+/* SIDEBAR */
+.video-list{
+  width:35%;
+
+  background:rgba(255,255,255,0.1);
+  backdrop-filter:blur(12px);
+
+  border-radius:20px;
+  padding:15px;
+
+  max-height:75vh;
+  overflow-y:auto;
 }
 
-/* المشغل */
-.video-player {
-  width: 70%;
-  background: white;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+.list-title{
+  color:white;
+  margin-bottom:15px;
 }
 
-.video-player video {
-  width: 100%;
-  border-radius: 10px;
+/* VIDEO ITEM */
+.video-item{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+
+  background:white;
+
+  padding:12px;
+
+  border-radius:15px;
+
+  margin-bottom:10px;
+
+  cursor:pointer;
+
+  transition:0.3s;
 }
-.video-desc {
-  font-size: 12px;
-  color: #777;
-  margin-top: 4px;
+
+.video-item:hover{
+  transform:translateY(-5px);
+  background:#4fc3f7;
+  color:white;
+}
+
+.video-item.active{
+  background:#00bcd4;
+  color:white;
+}
+
+/* ICON */
+.play-icon{
+  margin-top:4px;
+  color:#2a5298;
+}
+
+/* TEXT */
+.video-item h4{
+  margin:0;
+  font-size:15px;
+}
+
+.video-item p{
+  font-size:12px;
+  opacity:0.7;
+  margin-top:3px;
+}
+
+/* PLAYER */
+.video-player{
+  width:65%;
+
+  background:rgba(255,255,255,0.1);
+  backdrop-filter:blur(12px);
+
+  border-radius:20px;
+
+  padding:20px;
+
+  color:white;
+}
+
+.video-player video{
+  width:100%;
+  border-radius:15px;
+}
+
+/* EMPTY STATE */
+.empty-state{
+  text-align:center;
+  padding:60px;
+  opacity:0.8;
+}
+
+.empty-state svg{
+  font-size:60px;
+  margin-bottom:15px;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .video-layout{
+    flex-direction:column;
+  }
+
+  .video-list,
+  .video-player{
+    width:100%;
+  }
 }

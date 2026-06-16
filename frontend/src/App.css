@@ -6,10 +6,70 @@ font-family: 'Lobster', sans-serif;
 font-family: 'Lugrasimo', cursive;
 font-family: 'Noto Sans Arabic', sans-serif;
 }
-body{
-    width:100%;
-  min-height:100vh;
-  background: linear-gradient(135deg,#1e3c72,#2a5298);
+body {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  font-family: Arial, sans-serif;
+
+  /* base gradient */
+  background: linear-gradient(135deg, #0f172a, #1e3c72, #2a5298);
+
+  /* animation effect */
+  background-size: 300% 300%;
+  animation: bgMove 10s ease infinite;
+
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* حركة الخلفية */
+@keyframes bgMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ✨ نقاط ضوء (Floating particles effect) */
+body::before {
+  content: "";
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+
+  background-image: radial-gradient(white 1px, transparent 1px);
+  background-size: 40px 40px;
+
+  opacity: 0.08;
+  animation: moveDots 20s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes moveDots {
+  from { transform: translateY(0); }
+  to { transform: translateY(-100px); }
+}
+
+/* ✨ glow overlay */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+
+  background: radial-gradient(
+    circle at top left,
+    rgba(255, 215, 0, 0.15),
+    transparent 40%
+  ),
+  radial-gradient(
+    circle at bottom right,
+    rgba(0, 200, 255, 0.15),
+    transparent 40%
+  );
+
+  pointer-events: none;
 }
 
 .App-logo {

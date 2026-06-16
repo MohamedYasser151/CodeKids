@@ -1,4 +1,14 @@
 import React, { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faRobot,
+  faFlagCheckered,
+  faCube,
+  faDragon,
+  faBomb,
+  faPlay,
+  faRotateLeft
+} from "@fortawesome/free-solid-svg-icons";
 import "./css/game.css";
 
 function Game() {
@@ -156,21 +166,33 @@ function Game() {
     }
   };
 
-  const reset = () => {
+const reset = () => {
+  setMessage("🔄 Restarting...");
+
+  setTimeout(() => {
+    const newLevel = generateLevel();
+
+    setCurrentLevel(newLevel);
+    setGoal(getRandomGoal(newLevel.walls, newLevel.snakes, newLevel.traps));
+
     setRobot({ x: 0, y: 0 });
     setMessage("");
     setCode("");
-  };
-
+  }, 300);
+};
   return (
     <div className="game-container">
 
-      <h1 className="game-title">🚀 Code Kids Challenge</h1>
-      <h2 className="level-title">⭐ Level {level}</h2>
-
-      <div className="debug-box">
-        🤖 ({robot.x},{robot.y}) | ⭐ ({goal.x},{goal.y})
-      </div>
+      <h1 className="game-title">
+  <FontAwesomeIcon icon={faRobot} /> Code Kids Challenge
+</h1>
+<h2 className="level-title">
+  <FontAwesomeIcon icon={faFlagCheckered} /> Level {level}
+</h2>
+<div className="debug-box">
+  <FontAwesomeIcon icon={faRobot} /> ({robot.x},{robot.y}) |
+  <FontAwesomeIcon icon={faFlagCheckered} /> ({goal.x},{goal.y})
+</div>
 
       <div className="layout">
 
@@ -211,21 +233,25 @@ function Game() {
     else if (isSnake) cellType = "snake";
     else if (isTrap) cellType = "trap";
 
-    return (
-      <div key={i} className={`cell ${cellType}`}>
-        {isWall && "🧱"}
-        {isSnake && "🐍"}
-        {isTrap && "💥"}
-        {isGoal && "⭐"}
-        {isRobot && "🤖"}
-      </div>
-    );
+return (
+  <div key={i} className={`cell ${cellType}`}>
+
+    {isWall && <FontAwesomeIcon icon={faCube} />}
+    {isSnake && <FontAwesomeIcon icon={faDragon} />}
+    {isTrap && <FontAwesomeIcon icon={faBomb} />}
+    {isGoal && <FontAwesomeIcon icon={faFlagCheckered} />}
+    {isRobot && <FontAwesomeIcon icon={faRobot} />}
+
+  </div>
+);
   })}
 </div>
 
         {/* EDITOR */}
         <div className="editor">
-          <h3>💻 Write Code</h3>
+<h3>
+  <FontAwesomeIcon icon={faPlay} /> Write Code
+</h3>
 
           <textarea
             value={code}
@@ -234,8 +260,13 @@ function Game() {
 await move("down");`}
           />
 
-          <button onClick={run}>▶ Run</button>
-          <button onClick={reset}>🔄 Reset</button>
+<button onClick={run}>
+  <FontAwesomeIcon icon={faPlay} /> Run
+</button>
+
+<button onClick={reset}>
+  <FontAwesomeIcon icon={faRotateLeft} /> Reset
+</button>
         </div>
 
       </div>

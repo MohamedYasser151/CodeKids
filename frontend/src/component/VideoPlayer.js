@@ -1,16 +1,26 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faGamepad,
+  faBookOpen 
+} from "@fortawesome/free-solid-svg-icons";
+import {
+  faPython,
+  faJs,
+} from "@fortawesome/free-brands-svg-icons";
+
 import "./css/videoplayer.css";
 
 export default function Videoplayer() {
 
   const navigate = useNavigate();
 
-  const courses = [
-    { name: "Scratch", icon: "🎮" },
-    { name: "Python", icon: "🐍" },
-    { name: "JavaScript", icon: "⚡" }
-  ];
+const courses = [
+  { name: "Scratch", icon: faGamepad },
+  { name: "Python", icon: faPython },
+  { name: "JavaScript", icon: faJs }
+];
 
 const openCourse = (course) => {
   navigate(`/videos/${course.toLowerCase()}`);
@@ -19,7 +29,10 @@ const openCourse = (course) => {
   return (
     <div className="course-container">
 
-      <h1 className="title">📚 Learning Courses</h1>
+      <h1 className="title">
+  <FontAwesomeIcon icon={faBookOpen} className="titleIcon" />
+  Learning Courses
+</h1>
 
       <div className="course-grid">
 
@@ -28,11 +41,12 @@ const openCourse = (course) => {
             key={c.name}
             className="course-card"
             onClick={() => {
-  console.log("OPEN:", c.name);
-  navigate(`/videos/${c.name}`);
+  navigate(`/videos/${c.name.toLowerCase()}`);
 }}
           >
-            <div className="icon">{c.icon}</div>
+<div className="icon">
+  <FontAwesomeIcon icon={c.icon} />
+</div>
             <h2>{c.name}</h2>
           </div>
         ))}

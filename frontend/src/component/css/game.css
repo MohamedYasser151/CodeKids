@@ -21,6 +21,7 @@
   margin-bottom:10px;
   text-shadow:
   0 4px 15px rgba(0,0,0,.2);
+  margin-top: 50px;
 }
 
 .level-title{
@@ -305,6 +306,36 @@
   font-weight:bold;
 
   color:white;
+}
+
+
+.game-title svg{
+  color:#4fc3f7;
+  margin-right:10px;
+  filter: drop-shadow(0 0 10px #4fc3f7);
+}
+
+.level-title svg{
+  color:#ffd54f;
+  margin-right:8px;
+}
+
+.debug-box svg{
+  margin:0 5px;
+  color:#4fc3f7;
+}
+
+.cell svg{
+  font-size:clamp(14px,2.5vw,24px);
+}
+
+.editor h3 svg{
+  margin-right:8px;
+  color:#4fc3f7;
+}
+
+button svg{
+  margin-right:6px;
 }
 
 /* ===========================
