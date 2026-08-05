@@ -7,7 +7,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import styles from "./css/signup.module.css";
 import { useTranslation } from 'react-i18next';
-
+import api from './api';
 function Signin() {
   const { t, i18n } = useTranslation();
 
@@ -51,7 +51,7 @@ function Signin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-    const response = await axios.post('https://code-kids-ezwr.vercel.app/loginkids', formData);
+const response = await api.post("/loginkids", formData);
 const responseData = response.data;
 
 if (responseData && response.data.success) {
@@ -78,7 +78,6 @@ navigate("/home");
 } else {
   alert("Wrong password or username");
 }
-      console.log(response);
     } catch (error) {
       console.error('Error during login:', error);
       alert('An error occurred during login');

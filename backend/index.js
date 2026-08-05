@@ -55,32 +55,32 @@ db.getConnection((err, conn) => {
 });
 
 // ================= SIGNUP =================
-app.post("/signup", (req, res) => {
-  const { username, password, code } = req.body;
+// app.post("/signup", (req, res) => {
+//   const { username, password, code } = req.body;
 
-  const check = "SELECT * FROM login WHERE username=? OR code=?";
+//   const check = "SELECT * FROM login WHERE username=? OR code=?";
 
-  db.query(check, [username, code], (err, result) => {
-    if (err) return res.status(500).json(err);
+//   db.query(check, [username, code], (err, result) => {
+//     if (err) return res.status(500).json(err);
 
-    if (result.length > 0) {
-      return res.json({ message: "User already exists" });
-    }
+//     if (result.length > 0) {
+//       return res.json({ message: "User already exists" });
+//     }
 
-    bcrypt.hash(password, 10, (err2, hash) => {
-      if (err2) return res.status(500).json(err2);
+//     bcrypt.hash(password, 10, (err2, hash) => {
+//       if (err2) return res.status(500).json(err2);
 
-      const sql =
-        "INSERT INTO login (username,password,code) VALUES (?,?,?)";
+//       const sql =
+//         "INSERT INTO login (username,password,code) VALUES (?,?,?)";
 
-      db.query(sql, [username, hash, code], (err3) => {
-        if (err3) return res.status(500).json(err3);
+//       db.query(sql, [username, hash, code], (err3) => {
+//         if (err3) return res.status(500).json(err3);
 
-        res.json({ message: "User created" });
-      });
-    });
-  });
-});
+//         res.json({ message: "User created" });
+//       });
+//     });
+//   });
+// });
 
 // ================= LOGIN =================
 app.post("/loginkids", (req, res) => {

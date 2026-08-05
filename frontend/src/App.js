@@ -61,6 +61,9 @@ const LoginAdmin = lazy (()=>import('./component/admin/loginAdmin.js'));
 
 
 
+const UploadExam = lazy(()=> import('./Teacher/UploadExam.js'))
+const Student = lazy(()=> import('./Student/Student.js'))
+const CodeKidsIsland = lazy(()=> import('./Student/CodeKidsIsland/CodeKidsIsland.js'))
 
 const App = ()=>{
  
@@ -76,6 +79,19 @@ const App = ()=>{
         <Routes>
       
         <Route path="/" element={<Signin/>}/>
+        <Route path="/UploadExam" element={<UploadExam/>}/>
+        <Route path="/CodeKidsIsland" element={<CodeKidsIsland/>}/>
+        <Route path="/Student" element={
+           <React.Suspense fallback={<Loading/>}>
+          
+          <Navbars/>
+          
+          
+          <Student/>
+          
+          </React.Suspense>
+          
+          }/>
 
 
           <Route path="/Games" element={

@@ -1,0 +1,123 @@
+.student-page{
+
+    min-height:100vh;
+
+    /* background:#f4f7fc; */
+
+    padding:40px;
+
+}
+
+.student-header{
+
+    text-align:center;
+
+    margin-bottom:40px;
+
+}
+
+.student-header h1{
+
+    color:#4f46e5;
+
+    font-size:40px;
+
+}
+
+.student-header p{
+
+    color:#666;
+
+}
+
+.exam-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+
+    gap:25px;
+
+}
+
+.exam-card{
+
+    background:white;
+
+    border-radius:15px;
+
+    padding:25px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+    transition:.3s;
+
+}
+
+.exam-card:hover{
+
+    transform:translateY(-8px);
+
+}
+
+.exam-card h2{
+
+    color:#4f46e5;
+
+    margin-bottom:10px;
+
+}
+
+.exam-card p{
+
+    color:#666;
+
+}
+
+.exam-info{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin:25px 0;
+
+    color:#555;
+
+}
+
+.start-btn{
+
+    width:100%;
+
+    border:none;
+
+    padding:15px;
+
+    border-radius:10px;
+
+    background:#22c55e;
+
+    color:white;
+
+    font-size:17px;
+
+    cursor:pointer;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:10px;
+
+    transition:.3s;
+
+}
+
+.start-btn:hover{
+
+    background:#16a34a;
+
+}

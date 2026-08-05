@@ -6,3 +6,7 @@ const API = axios.create({
 
 export const getWeekly = () => API.get("/weekly");
 export const getMonthly = () => API.get("/monthly");
+
+export default axios.create({
+  baseURL: "https://code-kids-ezwr.vercel.app",
+});
