@@ -1,66 +1,157 @@
 import "aframe";
-import { useEffect, useRef, useState } from "react";
+
+import {
+    useCallback,
+    useEffect,
+    useRef,
+    useState
+} from "react";
+
 import "./CodeKidsIsland.css";
+
 import stages from "./stages.js";
 
 
+/* =====================================================
+   IMAGE MATERIAL
+===================================================== */
 
-/* =========================================
-   TREE
-========================================= */
+const imageMaterial = `
+    shader: standard;
+    transparent: true;
+    alphaTest: 0.05;
+    side: double;
+`;
 
-function Tree({ position, scale = "1 1 1" }) {
+
+/* =====================================================
+   TREE IMAGE
+===================================================== */
+
+function TreeImage({
+    type = "round",
+    position = "0 0 0",
+    width = 3,
+    height = 4,
+    rotation = "0 0 0"
+}) {
+
+    const images = {
+
+        big: "/images/tree-big.png",
+
+        pine: "/images/tree-pine.png",
+
+        round: "/images/tree-round.png"
+
+    };
+
 
     return (
-        <a-entity
+
+        <a-image
+            src={images[type]}
             position={position}
-            scale={scale}
-        >
+            width={width}
+            height={height}
+            rotation={rotation}
+            material={imageMaterial}
+        />
 
-            <a-cylinder
-                position="0 0.8 0"
-                radius="0.25"
-                height="1.6"
-                color="#75462A"
-            />
-
-            <a-cone
-                position="0 2 0"
-                radius-bottom="1"
-                radius-top="0.15"
-                height="1.8"
-                color="#2E8B57"
-            />
-
-            <a-cone
-                position="0 2.7 0"
-                radius-bottom="0.75"
-                radius-top="0.1"
-                height="1.4"
-                color="#3FAE62"
-            />
-
-        </a-entity>
     );
 }
 
 
-/* =========================================
-   CLOUD
-========================================= */
+/* =====================================================
+   HOUSE IMAGE
+===================================================== */
 
-function Cloud({ position, scale = "1 1 1" }) {
+function HouseImage({
+    type = "red",
+    position = "0 0 0",
+    width = 4,
+    height = 4
+}) {
+
+    const image =
+        type === "blue"
+            ? "/images/house-blue.png"
+            : "/images/house-red.png";
+
+
+    return (
+
+        <a-image
+            src={image}
+            position={position}
+            width={width}
+            height={height}
+            material={imageMaterial}
+        />
+
+    );
+}
+
+
+/* =====================================================
+   WATERFALL
+===================================================== */
+
+function Waterfall() {
+
+    return (
+
+        <a-image
+            src="/images/waterfall.png"
+            position="10 2.7 -5"
+            width="5"
+            height="6"
+            material={imageMaterial}
+        />
+
+    );
+}
+
+
+/* =====================================================
+   CASTLE
+===================================================== */
+
+function Castle() {
+
+    return (
+
+        <a-image
+            src="/images/code-kids-castle.png"
+            position="0 4.5 -10"
+            width="15"
+            height="10"
+            material={imageMaterial}
+        />
+
+    );
+}
+
+
+/* =====================================================
+   CLOUD
+===================================================== */
+
+function Cloud({
+    position,
+    scale = "1 1 1"
+}) {
 
     return (
 
         <a-entity
             position={position}
             scale={scale}
-
             animation="
                 property: position;
-                to: 15 8 -18;
-                dur: 45000;
+                from: -18 10 -12;
+                to: 18 10 -12;
+                dur: 50000;
                 loop: true;
                 easing: linear;
             "
@@ -95,129 +186,377 @@ function Cloud({ position, scale = "1 1 1" }) {
 }
 
 
-/* =========================================
-   STAGE
-========================================= */
+/* =====================================================
+   FLOWER
+===================================================== */
 
-function Stage({ stage }) {
-
-    let color = "#999999";
-
-    if (stage.status === "completed") {
-        color = "#35D05A";
-    }
-
-    if (stage.status === "current") {
-        color = "#2196F3";
-    }
+function Flower({
+    position,
+    color = "#FF5C8A"
+}) {
 
     return (
 
         <a-entity
-            position={`${stage.x} ${stage.y} ${stage.z}`}
+            position={position}
         >
 
-            {/* منصة المرحلة */}
-
             <a-cylinder
-                radius="0.85"
-                height="0.18"
-                color="#E8C47A"
-            />
-
-            {/* الحلقة */}
-
-            <a-torus
-                radius="0.85"
-                radius-tubular="0.07"
-                color={color}
-                rotation="90 0 0"
-            />
-
-            {/* المرحلة الحالية */}
-
-            {stage.status === "current" && (
-
-                <a-torus
-                    radius="1.15"
-                    radius-tubular="0.05"
-                    color="#FFD93D"
-                    rotation="90 0 0"
-
-                    animation="
-                        property: scale;
-                        from: 1 1 1;
-                        to: 1.3 1.3 1.3;
-                        dur: 1000;
-                        loop: true;
-                        dir: alternate;
-                    "
-                />
-
-            )}
-
-            {/* رقم المرحلة */}
-
-            <a-text
-                value={`${stage.id}`}
-                align="center"
-                color="#FFFFFF"
-                width="2"
                 position="0 0.25 0"
+                radius="0.035"
+                height="0.5"
+                color="#319B46"
             />
 
-            {/* اسم المرحلة */}
-
-            <a-text
-                value={stage.name}
-                align="center"
-                color="#FFFFFF"
-                width="3"
-                position="0 0.75 0"
+            <a-sphere
+                position="0 0.55 0"
+                radius="0.14"
+                color={color}
             />
-
-            {/* مكتملة */}
-
-            {stage.status === "completed" && (
-
-                <a-text
-                    value="✓"
-                    align="center"
-                    color="#35D05A"
-                    width="1.5"
-                    position="0 1.15 0"
-                />
-
-            )}
-
-            {/* مقفولة */}
-
-            {stage.status === "locked" && (
-
-                <a-text
-                    value="LOCKED"
-                    align="center"
-                    color="#FFFFFF"
-                    width="2"
-                    position="0 1.15 0"
-                />
-
-            )}
 
         </a-entity>
     );
 }
 
 
-/* =========================================
-   PLAYER
-========================================= */
+/* =====================================================
+   ROCK
+===================================================== */
 
-function PlayerController({ position, onStageEnter }) {
+function Rock({
+    position,
+    scale = "1 1 1"
+}) {
+
+    return (
+
+        <a-entity
+            position={position}
+            scale={scale}
+        >
+
+            <a-dodecahedron
+                radius="0.7"
+                color="#718096"
+            />
+
+            <a-dodecahedron
+                radius="0.45"
+                position="0.45 0.15 0.2"
+                color="#8795A5"
+            />
+
+        </a-entity>
+    );
+}
+
+
+/* =====================================================
+   STAGE
+===================================================== */
+
+function Stage({
+    stage,
+    isLatest,
+    onClick
+}) {
+
+    let ringColor = "#9CA3AF";
+
+
+    if (stage.status === "completed") {
+
+        ringColor = "#35D05A";
+
+    }
+
+
+    if (stage.status === "current") {
+
+        ringColor = "#2196F3";
+
+    }
+
+
+    const unread =
+        !stage.read &&
+        (
+            stage.status === "current" ||
+            stage.status === "completed"
+        );
+
+
+    return (
+
+        <a-entity
+            position={`
+                ${stage.x}
+                ${stage.y}
+                ${stage.z}
+            `}
+        >
+
+            {/* =================================================
+                MESSAGE
+            ================================================= */}
+
+            <a-entity
+                position="0 2.2 0"
+            >
+
+                <a-plane
+                    position="0 -0.05 -0.04"
+                    width="3.8"
+                    height="1.25"
+                    color="#000000"
+                    material="
+                        opacity:0.15;
+                        transparent:true;
+                    "
+                />
+
+
+                <a-plane
+                    position="0 0 0"
+                    width="3.8"
+                    height="1.25"
+                    color="#FFFFFF"
+                    material="
+                        opacity:0.94;
+                        transparent:true;
+                        side:double;
+                    "
+                />
+
+
+                <a-triangle
+                    position="0 -0.72 0"
+                    rotation="0 0 180"
+                    vertex-a="0 0.18 0"
+                    vertex-b="-0.18 -0.15 0"
+                    vertex-c="0.18 -0.15 0"
+                    color="#FFFFFF"
+                />
+
+
+                <a-text
+                    value={stage.name}
+                    align="center"
+                    color="#243B53"
+                    width="4.5"
+                    position="0 0.25 0.02"
+                />
+
+
+                {stage.read ? (
+
+                    <a-text
+                        value="✓ مقروءة"
+                        align="center"
+                        color="#2E9D4D"
+                        width="3"
+                        position="0 -0.15 0.02"
+                    />
+
+                ) : unread ? (
+
+                    <a-text
+                        value="🔴 غير مقروءة"
+                        align="center"
+                        color="#E53935"
+                        width="3"
+                        position="0 -0.15 0.02"
+                    />
+
+                ) : null}
+
+
+                {isLatest && (
+
+                    <a-text
+                        value="⭐ آخر حصة"
+                        align="center"
+                        color="#F5A623"
+                        width="3.4"
+                        position="0 0.65 0.02"
+                    />
+
+                )}
+
+            </a-entity>
+
+
+            {/* =================================================
+                GOLD PLATFORM
+            ================================================= */}
+
+            <a-cylinder
+                position="0 0.05 0"
+                radius="1.25"
+                height="0.25"
+                color="#F6C945"
+            />
+
+
+            <a-cylinder
+                position="0 -0.08 0"
+                radius="1.35"
+                height="0.08"
+                color="#B8871D"
+            />
+
+
+            {/* =================================================
+                RING
+            ================================================= */}
+
+            <a-torus
+                position="0 0.22 0"
+                radius="1.12"
+                radius-tubular="0.10"
+                rotation="90 0 0"
+                color={ringColor}
+            />
+
+
+            {/* =================================================
+                CURRENT ANIMATION
+            ================================================= */}
+
+            {stage.status === "current" && (
+
+                <a-torus
+                    position="0 0.28 0"
+                    radius="1.42"
+                    radius-tubular="0.07"
+                    rotation="90 0 0"
+                    color="#FFD93D"
+                    animation="
+                        property: scale;
+                        from: 1 1 1;
+                        to: 1.15 1.15 1.15;
+                        dur: 900;
+                        loop: true;
+                        dir: alternate;
+                        easing: easeInOutSine;
+                    "
+                />
+
+            )}
+
+
+            {/* =================================================
+                NUMBER
+            ================================================= */}
+
+            <a-sphere
+                position="0 0.42 0"
+                radius="0.75"
+                color={
+                    stage.status === "completed"
+                        ? "#45C84A"
+                        : stage.status === "current"
+                            ? "#2196F3"
+                            : "#6B7280"
+                }
+            />
+
+
+            <a-text
+                value={`${stage.id}`}
+                align="center"
+                color="#FFFFFF"
+                width="2.8"
+                position="0 0.25 0.76"
+            />
+
+
+            {/* =================================================
+                STARS
+            ================================================= */}
+
+            {stage.status !== "locked" && (
+
+                <a-text
+                    value="★★★"
+                    align="center"
+                    color="#FFD43B"
+                    width="3"
+                    position="0 -0.35 0"
+                />
+
+            )}
+
+
+            {/* =================================================
+                LOCK
+            ================================================= */}
+
+            {stage.status === "locked" && (
+
+                <a-text
+                    value="🔒"
+                    align="center"
+                    color="#FFFFFF"
+                    width="2"
+                    position="0 0.15 0.78"
+                />
+
+            )}
+
+
+            {/* =================================================
+                CLICK
+            ================================================= */}
+
+            <a-cylinder
+                position="0 0.35 0"
+                radius="1.45"
+                height="0.5"
+                material="
+                    opacity:0;
+                    transparent:true;
+                "
+                class="clickable"
+                onClick={() =>
+                    onClick(stage)
+                }
+            />
+
+        </a-entity>
+    );
+}
+
+
+/* =====================================================
+   PLAYER + FOLLOW CAMERA
+===================================================== */
+function PlayerController({
+    position,
+    onStageEnter,
+    controls
+}) {
 
     const playerRef = useRef(null);
 
     const currentStageRef = useRef(null);
+
+    const keysRef = useRef({});
+
+    const controlsRef = useRef(controls);
+
+    const velocityRef = useRef({
+        x: 0,
+        z: 0
+    });
+
+
+    useEffect(() => {
+
+        controlsRef.current = controls;
+
+    }, [controls]);
+
 
     useEffect(() => {
 
@@ -225,17 +564,9 @@ function PlayerController({ position, onStageEnter }) {
 
         if (!player) return;
 
-        const keys = {};
 
-        // سرعة اللاعب الحالية
-        let velocityX = 0;
-        let velocityZ = 0;
+        const keys = keysRef.current;
 
-        const acceleration = 0.012;
-        const maxSpeed = 0.10;
-
-        // نعومة التوقف
-        const friction = 0.82;
 
         const handleKeyDown = (event) => {
 
@@ -243,11 +574,13 @@ function PlayerController({ position, onStageEnter }) {
 
         };
 
+
         const handleKeyUp = (event) => {
 
             keys[event.key.toLowerCase()] = false;
 
         };
+
 
         window.addEventListener(
             "keydown",
@@ -260,23 +593,25 @@ function PlayerController({ position, onStageEnter }) {
         );
 
 
-        let animationFrame;
+        let frame;
 
 
-        const gameLoop = () => {
+        const loop = () => {
 
             const object = player.object3D;
 
 
-            /*
-            =================================
-            INPUT
-            =================================
-            */
-
             let inputX = 0;
+
             let inputZ = 0;
 
+
+            const mobile = controlsRef.current;
+
+
+            /* ===============================
+               KEYBOARD
+            =============================== */
 
             if (
                 keys["a"] ||
@@ -318,121 +653,182 @@ function PlayerController({ position, onStageEnter }) {
             }
 
 
-            /*
-            =================================
-            ACCELERATION
-            =================================
-            */
+            /* ===============================
+               MOBILE
+            =============================== */
+
+            if (mobile.left) {
+
+                inputX -= 1;
+
+            }
+
+            if (mobile.right) {
+
+                inputX += 1;
+
+            }
+
+            if (mobile.up) {
+
+                inputZ -= 1;
+
+            }
+
+            if (mobile.down) {
+
+                inputZ += 1;
+
+            }
+
+
+            /* ===============================
+               NORMALIZE
+            =============================== */
+
+            if (
+                inputX !== 0 &&
+                inputZ !== 0
+            ) {
+
+                inputX *= 0.707;
+
+                inputZ *= 0.707;
+
+            }
+
+
+            /* ===============================
+               MOVEMENT
+            =============================== */
+
+            const velocity =
+                velocityRef.current;
+
+
+            const acceleration = 0.018;
+
 
             if (inputX !== 0) {
 
-                velocityX +=
-                    inputX * acceleration;
+                velocity.x +=
+                    inputX *
+                    acceleration;
 
             }
+
 
             if (inputZ !== 0) {
 
-                velocityZ +=
-                    inputZ * acceleration;
+                velocity.z +=
+                    inputZ *
+                    acceleration;
 
             }
 
 
-            /*
-            =================================
-            LIMIT SPEED
-            =================================
-            */
+            /* ===============================
+               FRICTION
+            =============================== */
 
-            velocityX = Math.max(
-                -maxSpeed,
-                Math.min(maxSpeed, velocityX)
-            );
+            velocity.x *= 0.82;
 
-            velocityZ = Math.max(
-                -maxSpeed,
-                Math.min(maxSpeed, velocityZ)
-            );
+            velocity.z *= 0.82;
 
 
-            /*
-            =================================
-            FRICTION
-            =================================
-            */
+            /* ===============================
+               MAX SPEED
+            =============================== */
 
-            if (inputX === 0) {
-
-                velocityX *= friction;
-
-            }
-
-            if (inputZ === 0) {
-
-                velocityZ *= friction;
-
-            }
+            const maxSpeed = 0.14;
 
 
-            /*
-            =================================
-            NEW POSITION
-            =================================
-            */
+            velocity.x =
+                Math.max(
+                    -maxSpeed,
+                    Math.min(
+                        maxSpeed,
+                        velocity.x
+                    )
+                );
+
+
+            velocity.z =
+                Math.max(
+                    -maxSpeed,
+                    Math.min(
+                        maxSpeed,
+                        velocity.z
+                    )
+                );
+
+
+            /* ===============================
+               POSITION
+            =============================== */
 
             const newX =
-                object.position.x + velocityX;
+                object.position.x +
+                velocity.x;
+
 
             const newZ =
-                object.position.z + velocityZ;
+                object.position.z +
+                velocity.z;
 
 
-            /*
-            =================================
-            ISLAND BOUNDARY
-            =================================
-            */
+            /* ===============================
+               ISLAND BOUNDARY
+            =============================== */
 
-            const distance = Math.sqrt(
-                newX * newX +
-                newZ * newZ
-            );
-
-            const maxDistance = 9.2;
+            const islandRadius = 12;
 
 
-            if (distance < maxDistance) {
+            const distance =
+                Math.sqrt(
+                    newX * newX +
+                    newZ * newZ
+                );
 
-                object.position.x = newX;
-                object.position.z = newZ;
+
+            if (
+                distance <
+                islandRadius
+            ) {
+
+                object.position.x =
+                    newX;
+
+                object.position.z =
+                    newZ;
 
             } else {
 
-                // لو وصل الحافة
-                // نوقف الحركة
+                velocity.x *= 0.1;
 
-                velocityX *= 0.2;
-                velocityZ *= 0.2;
+                velocity.z *= 0.1;
 
             }
 
 
-            /*
-            =================================
-            CHECK STAGES
-            =================================
-            */
+            /* ===============================
+               STAGE DETECTION
+            =============================== */
 
             let nearStage = null;
+
 
             stages.forEach((stage) => {
 
                 const dx =
-                    object.position.x - stage.x;
+                    object.position.x -
+                    stage.x;
+
 
                 const dz =
-                    object.position.z - stage.z;
+                    object.position.z -
+                    stage.z;
+
 
                 const stageDistance =
                     Math.sqrt(
@@ -441,7 +837,10 @@ function PlayerController({ position, onStageEnter }) {
                     );
 
 
-                if (stageDistance < 1.25) {
+                if (
+                    stageDistance <
+                    1.55
+                ) {
 
                     nearStage = stage;
 
@@ -450,45 +849,48 @@ function PlayerController({ position, onStageEnter }) {
             });
 
 
-            /*
-            =================================
-            ENTER STAGE
-            =================================
-            */
+            /* ===============================
+               ENTER STAGE
+            =============================== */
 
             if (
                 nearStage &&
-                currentStageRef.current !== nearStage.id
+                currentStageRef.current !==
+                nearStage.id
             ) {
 
                 currentStageRef.current =
                     nearStage.id;
 
-                onStageEnter(nearStage);
+
+                onStageEnter(
+                    nearStage
+                );
 
             }
 
 
-            /*
-            =================================
-            LEAVE STAGE
-            =================================
-            */
+            /* ===============================
+               LEAVE STAGE
+            =============================== */
 
             if (!nearStage) {
 
-                currentStageRef.current = null;
+                currentStageRef.current =
+                    null;
 
             }
 
 
-            animationFrame =
-                requestAnimationFrame(gameLoop);
+            frame =
+                requestAnimationFrame(
+                    loop
+                );
 
         };
 
 
-        gameLoop();
+        loop();
 
 
         return () => {
@@ -498,13 +900,15 @@ function PlayerController({ position, onStageEnter }) {
                 handleKeyDown
             );
 
+
             window.removeEventListener(
                 "keyup",
                 handleKeyUp
             );
 
+
             cancelAnimationFrame(
-                animationFrame
+                frame
             );
 
         };
@@ -523,7 +927,9 @@ function PlayerController({ position, onStageEnter }) {
             `}
         >
 
-            {/* BODY */}
+            {/* ===============================
+                BODY
+            =============================== */}
 
             <a-cylinder
                 position="0 0.75 0"
@@ -533,7 +939,9 @@ function PlayerController({ position, onStageEnter }) {
             />
 
 
-            {/* HEAD */}
+            {/* ===============================
+                HEAD
+            =============================== */}
 
             <a-sphere
                 position="0 1.45 0"
@@ -542,17 +950,21 @@ function PlayerController({ position, onStageEnter }) {
             />
 
 
-            {/* HAIR */}
+            {/* ===============================
+                HAIR
+            =============================== */}
 
             <a-sphere
-                position="0 1.68 -0.03"
+                position="0 1.68 -0.02"
                 radius="0.36"
                 color="#5A3825"
                 scale="1 0.5 1"
             />
 
 
-            {/* BACKPACK */}
+            {/* ===============================
+                BACKPACK
+            =============================== */}
 
             <a-box
                 position="0 0.8 0.35"
@@ -563,7 +975,9 @@ function PlayerController({ position, onStageEnter }) {
             />
 
 
-            {/* LEFT LEG */}
+            {/* ===============================
+                LEFT LEG
+            =============================== */}
 
             <a-cylinder
                 position="-0.16 0.2 0"
@@ -573,7 +987,9 @@ function PlayerController({ position, onStageEnter }) {
             />
 
 
-            {/* RIGHT LEG */}
+            {/* ===============================
+                RIGHT LEG
+            =============================== */}
 
             <a-cylinder
                 position="0.16 0.2 0"
@@ -583,46 +999,115 @@ function PlayerController({ position, onStageEnter }) {
             />
 
 
-            {/* NAME */}
+            {/* ===============================
+                NAME
+            =============================== */}
 
             <a-text
                 value="YOU"
                 align="center"
                 color="#FFFFFF"
                 width="2"
-                position="0 2.1 0"
+                position="0 2.15 0"
             />
 
 
-            {/* CAMERA */}
+            {/* ===============================
+                CAMERA
+                LOW THIRD PERSON
+            =============================== */}
 
             <a-camera
-                position="0 3.3 5.5"
-                look-controls="enabled: false"
-                wasd-controls="enabled: false"
+                position="0 3.0 6.8"
+                rotation="-7 0 0"
+                look-controls="
+                    enabled: false;
+                    pointerLockEnabled: false;
+                "
+                wasd-controls="
+                    enabled: false;
+                "
             />
 
         </a-entity>
 
     );
-
 }
 
-/* =========================================
-   MAIN
-========================================= */
+
+/* =====================================================
+   MAIN COMPONENT
+===================================================== */
+
 function CodeKidsIsland() {
 
-    const [selectedStage, setSelectedStage] =
-        useState(null);
+    /* =================================================
+       SELECTED STAGE
+    ================================================= */
 
+    const [
+        selectedStage,
+        setSelectedStage
+    ] = useState(null);
+
+
+    /* =================================================
+       READ STAGES
+    ================================================= */
+
+    const [
+        readStages,
+        setReadStages
+    ] = useState(() => {
+
+        const saved =
+            localStorage.getItem(
+                "codeKidsReadStages"
+            );
+
+
+        return saved
+            ? JSON.parse(saved)
+            : [];
+
+    });
+
+
+    /* =================================================
+       MOBILE CONTROLS
+    ================================================= */
+
+    const [
+        controls,
+        setControls
+    ] = useState({
+
+        up: false,
+
+        down: false,
+
+        left: false,
+
+        right: false
+
+    });
+
+
+    /* =================================================
+       CURRENT STAGE
+    ================================================= */
 
     const currentStage =
         stages.find(
             stage =>
-                stage.status === "current"
+                stage.status ===
+                "current"
         );
 
+
+    /* =================================================
+       PLAYER START
+    ================================================= */
 
     const playerStart = {
 
@@ -631,302 +1116,746 @@ function CodeKidsIsland() {
             : 0,
 
         z: currentStage
-            ? currentStage.z
-            : 5
+            ? currentStage.z + 2
+            : 6
 
     };
 
 
-    const handleStageEnter = (stage) => {
+    /* =================================================
+       LATEST STAGE
+    ================================================= */
 
-        setSelectedStage(stage);
+    const latestStage =
+        stages[
+            stages.length - 1
+        ];
 
-    };
+
+    /* =================================================
+       MARK AS READ
+    ================================================= */
+
+    const markAsRead =
+        useCallback(
+            (stage) => {
+
+                setReadStages(
+                    prev => {
+
+                        if (
+                            prev.includes(
+                                stage.id
+                            )
+                        ) {
+
+                            return prev;
+
+                        }
 
 
-    const closeModal = () => {
+                        const next = [
 
-        setSelectedStage(null);
+                            ...prev,
 
-    };
+                            stage.id
+
+                        ];
+
+
+                        localStorage.setItem(
+                            "codeKidsReadStages",
+                            JSON.stringify(
+                                next
+                            )
+                        );
+
+
+                        return next;
+
+                    }
+                );
+
+            },
+            []
+        );
+
+
+    /* =================================================
+       STAGE ENTER
+    ================================================= */
+
+    const handleStageEnter =
+        useCallback(
+            (stage) => {
+
+                setSelectedStage(
+                    stage
+                );
+
+            },
+            []
+        );
+
+
+    /* =================================================
+       STAGE CLICK
+    ================================================= */
+
+    const handleStageClick =
+        (stage) => {
+
+            setSelectedStage(
+                stage
+            );
+
+        };
+
+
+    /* =================================================
+       CLOSE MODAL
+    ================================================= */
+
+    const closeModal =
+        () => {
+
+            if (
+                selectedStage
+            ) {
+
+                markAsRead(
+                    selectedStage
+                );
+
+            }
+
+
+            setSelectedStage(
+                null
+            );
+
+        };
+
+
+    /* =================================================
+       PRESS BUTTON
+    ================================================= */
+
+    const press =
+        (direction) => {
+
+            setControls(
+                prev => ({
+
+                    ...prev,
+
+                    [direction]:
+                        true
+
+                })
+            );
+
+        };
+
+
+    /* =================================================
+       RELEASE BUTTON
+    ================================================= */
+
+    const release =
+        (direction) => {
+
+            setControls(
+                prev => ({
+
+                    ...prev,
+
+                    [direction]:
+                        false
+
+                })
+            );
+
+        };
+
+
+    /* =================================================
+       BUTTON EVENTS
+    ================================================= */
+
+    const buttonEvents =
+        (direction) => ({
+
+            onTouchStart: (event) => {
+
+                event.preventDefault();
+
+                press(direction);
+
+            },
+
+
+            onTouchEnd: (event) => {
+
+                event.preventDefault();
+
+                release(direction);
+
+            },
+
+
+            onTouchCancel: () => {
+
+                release(direction);
+
+            },
+
+
+            onMouseDown: () => {
+
+                press(direction);
+
+            },
+
+
+            onMouseUp: () => {
+
+                release(direction);
+
+            },
+
+
+            onMouseLeave: () => {
+
+                release(direction);
+
+            }
+
+        });
 
 
     return (
 
         <div className="code-kids-world">
 
-
-            {/* =================================
-                3D WORLD
-            ================================= */}
+            {/* =================================================
+                A-FRAME SCENE
+            ================================================= */}
 
             <a-scene
                 embedded
+
                 renderer="
                     antialias: true;
                     colorManagement: true;
+                    physicallyCorrectLights: true;
                 "
+
+                vr-mode-ui="
+                    enabled: false;
+                "
+
+                device-orientation-permission-ui="
+                    enabled: false;
+                "
+
+                background="
+                    color: #65CFFF;
+                "
+
                 fog="
                     type: exponential;
-                    color: #8bd8ff;
-                    density: 0.015;
+                    color: #8BD8FF;
+                    density: 0.004;
                 "
             >
 
-                {/* SKY */}
+                {/* =================================================
+                    SKY
+                ================================================= */}
 
                 <a-sky
-                    color="#75D5FF"
+                    color="#65CFFF"
                 />
 
 
-                {/* LIGHT */}
+                {/* =================================================
+                    LIGHT
+                ================================================= */}
 
                 <a-light
                     type="ambient"
-                    intensity="1.8"
+                    intensity="1.7"
                     color="#FFFFFF"
                 />
 
+
                 <a-light
                     type="directional"
-                    position="-5 12 8"
-                    intensity="2"
+                    position="-8 15 10"
+                    intensity="2.2"
+                    castShadow="true"
                 />
 
 
-                {/* OCEAN */}
+                {/* =================================================
+                    OCEAN
+                ================================================= */}
 
                 <a-plane
                     position="0 -1.5 0"
                     rotation="-90 0 0"
-                    width="80"
-                    height="80"
-                    color="#24BFEA"
+                    width="100"
+                    height="100"
+                    color="#18BCE7"
                     material="
-                        roughness:0.2;
+                        roughness:0.25;
                         metalness:0;
-                        opacity:0.9;
-                        transparent:true;
                     "
                 />
 
 
-                {/* ISLAND */}
+                {/* =================================================
+                    ISLAND BASE
+                ================================================= */}
 
                 <a-cylinder
-                    position="0 -0.8 0"
-                    radius="12"
-                    height="1.5"
-                    color="#3D8F45"
-                />
-
-                <a-cylinder
-                    position="0 0"
-                    radius="11.5"
-                    height="0.45"
-                    color="#65C95A"
+                    position="0 -1 0"
+                    radius="15"
+                    height="2"
+                    color="#236B38"
                 />
 
 
-                {/* BEACH */}
+                {/* =================================================
+                    ISLAND GRASS
+                ================================================= */}
+
+                <a-cylinder
+                    position="0 -0.1 0"
+                    radius="14"
+                    height="0.7"
+                    color="#67C95A"
+                />
+
+
+                {/* =================================================
+                    BEACH
+                ================================================= */}
 
                 <a-ring
-                    position="0 0.24 0"
+                    position="0 0.27 0"
                     rotation="-90 0 0"
-                    radius-inner="10.2"
-                    radius-outer="11.5"
+                    radius-inner="12.2"
+                    radius-outer="14"
                     color="#F3D58A"
                 />
 
 
-                {/* ROAD */}
+                {/* =================================================
+                    OCEAN IMAGE
+                    Optional visual layer
+                ================================================= */}
+
+                <a-image
+                    src="/images/ocean.png"
+                    position="0 -1.45 -15"
+                    width="40"
+                    height="15"
+                    rotation="0 0 0"
+                    material="
+                        transparent: true;
+                        alphaTest: 0.05;
+                        side: double;
+                    "
+                />
+
+
+                {/* =================================================
+                    ROADS
+                ================================================= */}
 
                 <a-box
-                    position="0 0.32 3"
-                    rotation="0 0 8"
-                    width="2"
+                    position="0 0.38 4"
+                    rotation="0 0 4"
+                    width="2.2"
                     height="0.12"
                     depth="14"
-                    color="#D6A85D"
+                    color="#D9AE65"
                 />
+
 
                 <a-box
-                    position="-3 0.34 -3"
-                    rotation="0 -20 90"
+                    position="-4 0.4 -1"
+                    rotation="0 0 55"
                     width="2"
                     height="0.12"
-                    depth="8"
-                    color="#D6A85D"
+                    depth="10"
+                    color="#D9AE65"
                 />
+
 
                 <a-box
-                    position="3 0.36 -5"
-                    rotation="0 0 35"
+                    position="4 0.4 -4"
+                    rotation="0 0 -45"
                     width="2"
                     height="0.12"
-                    depth="8"
-                    color="#D6A85D"
+                    depth="10"
+                    color="#D9AE65"
                 />
 
 
-                {/* TREES */}
-
-                <Tree
-                    position="-7 0 -4"
-                    scale="1.2 1.2 1.2"
+                <a-box
+                    position="0 0.4 -7"
+                    rotation="0 0 0"
+                    width="2"
+                    height="0.12"
+                    depth="7"
+                    color="#D9AE65"
                 />
 
-                <Tree
-                    position="-5 0 5"
+
+                {/* =================================================
+                    TREES
+                ================================================= */}
+
+                <TreeImage
+                    type="big"
+                    position="-9 2.1 -4"
+                    width="3.5"
+                    height="4.5"
                 />
 
-                <Tree
-                    position="7 0 4"
+
+                <TreeImage
+                    type="round"
+                    position="-10 1.8 5"
+                    width="3"
+                    height="4"
+                />
+
+
+                <TreeImage
+                    type="pine"
+                    position="-7 2.1 -9"
+                    width="2.8"
+                    height="4.5"
+                />
+
+
+                <TreeImage
+                    type="big"
+                    position="10 2.1 5"
+                    width="3.5"
+                    height="4.5"
+                />
+
+
+                <TreeImage
+                    type="round"
+                    position="10 1.8 -5"
+                    width="3"
+                    height="4"
+                />
+
+
+                <TreeImage
+                    type="pine"
+                    position="6 2.1 -9"
+                    width="2.8"
+                    height="4.5"
+                />
+
+
+                <TreeImage
+                    type="round"
+                    position="-2 1.7 -10"
+                    width="2.8"
+                    height="3.8"
+                />
+
+
+                <TreeImage
+                    type="big"
+                    position="7 2 8"
+                    width="3.2"
+                    height="4.2"
+                />
+
+
+                {/* =================================================
+                    HOUSES
+                ================================================= */}
+
+                <HouseImage
+                    type="red"
+                    position="-8 3 2"
+                    width="9"
+                    height="7"
+                />
+
+
+                <HouseImage
+                    type="blue"
+                    position="8 3 -2"
+                    width="9"
+                    height="7"
+                />
+
+
+                {/* =================================================
+                    WATERFALL
+                ================================================= */}
+
+                <Waterfall />
+
+
+                {/* =================================================
+                    ROCKS
+                ================================================= */}
+
+                <Rock
+                    position="-11 0.4 -2"
                     scale="1.3 1.3 1.3"
                 />
 
-                <Tree
-                    position="6 0 -5"
-                />
 
-                <Tree
-                    position="2 0 -8"
-                    scale="1.4 1.4 1.4"
-                />
-
-                <Tree
-                    position="-2 0 -7"
-                />
-
-
-                {/* HOUSE */}
-
-                <a-box
-                    position="-5 1.3 2"
-                    width="2.5"
-                    height="2"
-                    depth="2.5"
-                    color="#F2A65A"
-                />
-
-                <a-cone
-                    position="-5 2.9 2"
-                    radius-bottom="2"
-                    radius-top="0"
-                    height="1.6"
-                    color="#D94F4F"
-                />
-
-
-                {/* STAGES */}
-
-                {stages.map((stage) => (
-
-                    <Stage
-                        key={stage.id}
-                        stage={stage}
-                    />
-
-                ))}
-
-
-                {/* PLAYER */}
-
-                <PlayerController
-                    position={playerStart}
-                    onStageEnter={handleStageEnter}
-                />
-
-
-                {/* CASTLE */}
-
-                <a-box
-                    position="2 2 -7"
-                    width="3"
-                    height="4"
-                    depth="3"
-                    color="#B8C7E8"
-                />
-
-                <a-cylinder
-                    position="0.7 3 -7"
-                    radius="0.7"
-                    height="5"
-                    color="#AFC2E8"
-                />
-
-                <a-cone
-                    position="0.7 6 -7"
-                    radius-bottom="1"
-                    radius-top="0"
-                    height="1.8"
-                    color="#6B5DD3"
-                />
-
-                <a-cylinder
-                    position="3.3 3 -7"
-                    radius="0.7"
-                    height="5"
-                    color="#AFC2E8"
-                />
-
-                <a-cone
-                    position="3.3 6 -7"
-                    radius-bottom="1"
-                    radius-top="0"
-                    height="1.8"
-                    color="#6B5DD3"
-                />
-
-
-                {/* CODE KIDS */}
-
-                <a-text
-                    value="CODE KIDS"
-                    position="0 5 -8"
-                    align="center"
-                    width="8"
-                    color="#FFD43B"
-                    side="double"
-                />
-
-
-                {/* CLOUDS */}
-
-                <Cloud
-                    position="-12 8 -10"
-                    scale="1.5 1.5 1.5"
-                />
-
-                <Cloud
-                    position="5 9 -15"
+                <Rock
+                    position="11 0.4 1"
                     scale="1.2 1.2 1.2"
                 />
 
+
+                <Rock
+                    position="8 0.4 -8"
+                />
+
+
+                <Rock
+                    position="-7 0.4 8"
+                />
+
+
+                {/* =================================================
+                    FLOWERS
+                ================================================= */}
+
+                <Flower
+                    position="-6 0 -3"
+                    color="#FF5C8A"
+                />
+
+
+                <Flower
+                    position="-5.5 0 -3.5"
+                    color="#FFD43B"
+                />
+
+
+                <Flower
+                    position="5 0 2"
+                    color="#FF5C8A"
+                />
+
+
+                <Flower
+                    position="5.5 0 2.5"
+                    color="#A855F7"
+                />
+
+
+                <Flower
+                    position="1 0 -6"
+                    color="#FFD43B"
+                />
+
+
+                <Flower
+                    position="-2 0 -5"
+                    color="#FF5C8A"
+                />
+
+
+                {/* =================================================
+                    CASTLE
+                ================================================= */}
+
+                <Castle />
+
+
+                {/* =================================================
+                    CASTLE TITLE
+                ================================================= */}
+
+                <a-text
+                    value="CODE KIDS"
+                    position="0 6.7 -9.3"
+                    align="center"
+                    width="8"
+                    color="#FFD43B"
+                />
+
+
+                {/* =================================================
+                    STAGES
+                ================================================= */}
+
+                {stages.map(
+                    (stage) => {
+
+                        const stageData = {
+
+                            ...stage,
+
+                            read:
+                                readStages.includes(
+                                    stage.id
+                                ) ||
+                                stage.read
+
+                        };
+
+
+                        return (
+
+                            <Stage
+                                key={
+                                    stage.id
+                                }
+
+                                stage={
+                                    stageData
+                                }
+
+                                isLatest={
+                                    stage.id ===
+                                    latestStage.id
+                                }
+
+                                onClick={
+                                    handleStageClick
+                                }
+
+                            />
+
+                        );
+
+                    }
+                )}
+
+
+                {/* =================================================
+                    PLAYER
+                ================================================= */}
+
+                <PlayerController
+                    position={
+                        playerStart
+                    }
+
+                    onStageEnter={
+                        handleStageEnter
+                    }
+
+                    controls={
+                        controls
+                    }
+                />
+
+
+                {/* =================================================
+                    CLOUDS
+                ================================================= */}
+
                 <Cloud
-                    position="12 7 -5"
+                    position="-15 9 -10"
+                    scale="1.5 1.5 1.5"
+                />
+
+
+                <Cloud
+                    position="6 10 -15"
+                    scale="1.3 1.3 1.3"
+                />
+
+
+                <Cloud
+                    position="15 8 -5"
+                    scale="1.1 1.1 1.1"
                 />
 
             </a-scene>
 
 
-            {/* =================================
+            {/* =================================================
+                MOBILE CONTROLS
+            ================================================= */}
+
+            <div className="mobile-controls">
+
+                <button
+                    className="control-up"
+                    {...buttonEvents("up")}
+                >
+                    ▲
+                </button>
+
+
+                <div className="horizontal-controls">
+
+                    <button
+                        {...buttonEvents("left")}
+                    >
+                        ◀
+                    </button>
+
+
+                    <button
+                        {...buttonEvents("down")}
+                    >
+                        ▼
+                    </button>
+
+
+                    <button
+                        {...buttonEvents("right")}
+                    >
+                        ▶
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            {/* =================================================
                 STAGE MODAL
-            ================================= */}
+            ================================================= */}
 
             {selectedStage && (
 
-                <div className="stage-modal-overlay">
+                <div
+                    className="stage-modal-overlay"
+                    onClick={
+                        closeModal
+                    }
+                >
 
-                    <div className="stage-modal">
-
+                    <div
+                        className="stage-modal"
+                        onClick={
+                            (event) =>
+                                event.stopPropagation()
+                        }
+                    >
 
                         {/* CLOSE */}
 
                         <button
                             className="modal-close"
-                            onClick={closeModal}
+                            onClick={
+                                closeModal
+                            }
                         >
                             ×
                         </button>
@@ -936,11 +1865,18 @@ function CodeKidsIsland() {
 
                         <div className="modal-stage-icon">
 
-                            {selectedStage.status === "completed"
-                                ? "✓"
-                                : selectedStage.status === "current"
-                                    ? "⭐"
-                                    : "🔒"
+                            {
+                                selectedStage.status ===
+                                "completed"
+
+                                    ? "✓"
+
+                                    : selectedStage.status ===
+                                      "current"
+
+                                        ? "⭐"
+
+                                        : "🔒"
                             }
 
                         </div>
@@ -950,28 +1886,89 @@ function CodeKidsIsland() {
 
                         <h2>
 
-                            {selectedStage.name}
+                            {
+                                selectedStage.name
+                            }
 
                         </h2>
 
 
-                        <div className="modal-stage-number">
+                        {/* NUMBER */}
 
-                            المرحلة {selectedStage.id}
+                        <div
+                            className="
+                                modal-stage-number
+                            "
+                        >
+
+                            المرحلة{" "}
+
+                            {
+                                selectedStage.id
+                            }
 
                         </div>
 
 
+                        {/* LAST LESSON */}
+
+                        {selectedStage.id ===
+                            latestStage.id && (
+
+                            <div
+                                className="
+                                    latest-badge
+                                "
+                            >
+
+                                ⭐ آخر حصة
+
+                            </div>
+
+                        )}
+
+
+                        {/* UNREAD */}
+
+                        {!(
+                            readStages.includes(
+                                selectedStage.id
+                            ) ||
+                            selectedStage.read
+                        ) && (
+
+                            <div
+                                className="
+                                    unread-badge
+                                "
+                            >
+
+                                🔴 هذه الحصة
+                                لم تُقرأ بعد
+
+                            </div>
+
+                        )}
+
+
                         {/* LESSON */}
 
-                        <div className="modal-section">
+                        <div
+                            className="
+                                modal-section
+                            "
+                        >
 
                             <span>
                                 📚 درس اليوم
                             </span>
 
                             <p>
-                                {selectedStage.lesson}
+
+                                {
+                                    selectedStage.lesson
+                                }
+
                             </p>
 
                         </div>
@@ -979,14 +1976,22 @@ function CodeKidsIsland() {
 
                         {/* EXPLANATION */}
 
-                        <div className="modal-section">
+                        <div
+                            className="
+                                modal-section
+                            "
+                        >
 
                             <span>
                                 💡 ماذا تعلمنا؟
                             </span>
 
                             <p>
-                                {selectedStage.explanation}
+
+                                {
+                                    selectedStage.explanation
+                                }
+
                             </p>
 
                         </div>
@@ -996,14 +2001,22 @@ function CodeKidsIsland() {
 
                         {selectedStage.evaluation && (
 
-                            <div className="modal-section">
+                            <div
+                                className="
+                                    modal-section
+                                "
+                            >
 
                                 <span>
                                     ⭐ تقييم الطفل
                                 </span>
 
                                 <p>
-                                    {selectedStage.evaluation}
+
+                                    {
+                                        selectedStage.evaluation
+                                    }
+
                                 </p>
 
                             </div>
@@ -1015,14 +2028,22 @@ function CodeKidsIsland() {
 
                         {selectedStage.notes && (
 
-                            <div className="modal-section">
+                            <div
+                                className="
+                                    modal-section
+                                "
+                            >
 
                                 <span>
                                     👨‍🏫 ملاحظات المدرس
                                 </span>
 
                                 <p>
-                                    {selectedStage.notes}
+
+                                    {
+                                        selectedStage.notes
+                                    }
+
                                 </p>
 
                             </div>
@@ -1030,15 +2051,21 @@ function CodeKidsIsland() {
                         )}
 
 
+                        {/* BUTTON */}
+
                         <button
-                            className="modal-button"
-                            onClick={closeModal}
+                            className="
+                                modal-button
+                            "
+                            onClick={
+                                closeModal
+                            }
                         >
 
-                            استمرار الرحلة 🚀
+                            قرأت الحصة
+                            واستمرار الرحلة 🚀
 
                         </button>
-
 
                     </div>
 
@@ -1048,7 +2075,6 @@ function CodeKidsIsland() {
 
         </div>
     );
-
 }
 
 

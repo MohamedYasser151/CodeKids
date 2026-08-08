@@ -1,310 +1,389 @@
-.code-kids-world {
+/* =========================================================
+   WORLD
+========================================================= */
 
-    width: 100%;
-    height: 100vh;
+.code-kids-world {
 
     position: relative;
 
+    width: 100vw;
+    height: 100vh;
+
     overflow: hidden;
 
-    background: #75d5ff;
+    background:
+        linear-gradient(
+            180deg,
+            #36b9ef 0%,
+            #8ee7ff 100%
+        );
+
+    font-family:
+        Arial,
+        sans-serif;
+
 }
 
+
+/* =========================================================
+   AFRAME
+========================================================= */
+
 .code-kids-world a-scene {
+
+    position: absolute;
+
+    inset: 0;
 
     width: 100%;
     height: 100%;
 
-    display: block;
 }
 
 
-/* =========================================
+/* =========================================================
+   USER CARD
+========================================================= */
+
+.game-user-card {
+
+    position: absolute;
+
+    z-index: 20;
+
+    top: 18px;
+    left: 18px;
+
+    width: 245px;
+
+    padding: 10px 18px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    color: white;
+
+    background:
+        rgba(20, 95, 170, 0.78);
+
+    border: 2px solid
+        rgba(255,255,255,0.65);
+
+    border-radius: 28px;
+
+    box-shadow:
+        0 8px 25px
+        rgba(0,0,0,0.22);
+
+    backdrop-filter:
+        blur(8px);
+
+}
+
+
+.avatar {
+
+    width: 62px;
+    height: 62px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 43px;
+
+    background:
+        rgba(255,255,255,0.2);
+
+    border-radius: 50%;
+
+}
+
+
+.game-user-card strong {
+
+    display: block;
+
+    font-size: 22px;
+
+}
+
+
+.points {
+
+    margin-top: 4px;
+
+    font-size: 21px;
+
+    color: #FFE34D;
+
+}
+
+
+/* =========================================================
+   TOP BUTTONS
+========================================================= */
+
+.game-top-buttons {
+
+    position: absolute;
+
+    z-index: 20;
+
+    top: 18px;
+    right: 18px;
+
+    display: flex;
+
+    gap: 14px;
+
+}
+
+
+.game-top-buttons button {
+
+    width: 72px;
+    height: 72px;
+
+    border-radius: 50%;
+
+    border: 2px solid
+        rgba(255,255,255,0.65);
+
+    background:
+        rgba(22, 113, 190, 0.72);
+
+    color: white;
+
+    font-size: 34px;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 7px 20px
+        rgba(0,0,0,0.2);
+
+    transition:
+        transform 0.2s ease;
+
+}
+
+
+.game-top-buttons button:hover {
+
+    transform:
+        scale(1.08);
+
+}
+
+
+/* =========================================================
+   MOBILE CONTROLS
+========================================================= */
+
+.mobile-controls {
+
+    position: absolute;
+
+    z-index: 30;
+
+    left: 28px;
+    bottom: 28px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 5px;
+
+    user-select: none;
+
+    touch-action: none;
+
+}
+
+
+.mobile-row {
+
+    display: flex;
+
+    gap: 8px;
+
+}
+
+
+.mobile-controls button {
+
+    width: 76px;
+    height: 76px;
+
+    border-radius: 50%;
+
+    border:
+        2px solid
+        rgba(255,255,255,0.65);
+
+    background:
+        rgba(20, 126, 207, 0.72);
+
+    color: white;
+
+    font-size: 31px;
+
+    cursor: pointer;
+
+    touch-action: none;
+
+    box-shadow:
+        0 7px 20px
+        rgba(0,0,0,0.25);
+
+    transition:
+        transform 0.08s ease,
+        background 0.08s ease;
+
+}
+
+
+.mobile-controls button:active {
+
+    transform:
+        scale(0.88);
+
+    background:
+        rgba(13, 98, 171, 0.9);
+
+}
+
+
+/* =========================================================
+   BOTTOM MESSAGE
+========================================================= */
+
+.journey-message {
+
+    position: absolute;
+
+    z-index: 20;
+
+    bottom: 25px;
+
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+
+    min-width: 420px;
+
+    padding: 16px 30px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 13px;
+
+    color: white;
+
+    background:
+        rgba(16, 79, 65, 0.88);
+
+    border-radius: 35px;
+
+    box-shadow:
+        0 8px 25px
+        rgba(0,0,0,0.3);
+
+    font-size: 21px;
+
+}
+
+
+.journey-message span {
+
+    font-size: 34px;
+
+}
+
+
+/* =========================================================
    MODAL OVERLAY
-========================================= */
+========================================================= */
 
 .stage-modal-overlay {
 
     position: fixed;
 
-    inset: 0;
+    z-index: 100;
 
-    z-index: 9999;
+    inset: 0;
 
     display: flex;
 
+    align-items: center;
     justify-content: center;
 
-    align-items: center;
+    padding: 20px;
 
-    background: rgba(0, 0, 0, 0.45);
+    background:
+        rgba(0,0,0,0.55);
 
-    backdrop-filter: blur(5px);
+    backdrop-filter:
+        blur(7px);
 
-    animation: modalFade .25s ease;
 }
 
 
-/* =========================================
+/* =========================================================
    MODAL
-========================================= */
+========================================================= */
 
 .stage-modal {
 
-    width: 430px;
+    position: relative;
 
-    max-width: calc(100% - 30px);
+    width: min(
+        560px,
+        94vw
+    );
 
-    max-height: 85vh;
+    max-height: 88vh;
 
     overflow-y: auto;
 
-    position: relative;
+    padding: 35px;
 
-    padding: 32px;
+    border-radius: 30px;
 
-    border-radius: 28px;
-
-    background: linear-gradient(
-        145deg,
-        #ffffff,
-        #f4f8ff
-    );
+    background:
+        linear-gradient(
+            145deg,
+            #ffffff,
+            #eef8ff
+        );
 
     box-shadow:
-        0 30px 80px rgba(0,0,0,.35);
+        0 30px 80px
+        rgba(0,0,0,0.4);
 
     text-align: center;
 
-    animation: modalPop .3s cubic-bezier(
-        .17,
-        .67,
-        .35,
-        1.4
-    );
-}
-
-
-/* =========================================
-   CLOSE
-========================================= */
-
-.modal-close {
-
-    position: absolute;
-
-    top: 12px;
-    right: 15px;
-
-    width: 38px;
-    height: 38px;
-
-    border: none;
-
-    border-radius: 50%;
-
-    background: #eef2f7;
-
-    color: #555;
-
-    font-size: 28px;
-
-    cursor: pointer;
-
-    transition: .2s;
-}
-
-.modal-close:hover {
-
-    background: #ff5b5b;
-
-    color: white;
-
-    transform: rotate(90deg);
-}
-
-
-/* =========================================
-   STAGE ICON
-========================================= */
-
-.modal-stage-icon {
-
-    width: 75px;
-    height: 75px;
-
-    margin: 0 auto 15px;
-
-    border-radius: 50%;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    background: linear-gradient(
-        135deg,
-        #35d05a,
-        #1ebc72
-    );
-
-    color: white;
-
-    font-size: 35px;
-
-    box-shadow:
-        0 10px 25px rgba(
-            53,
-            208,
-            90,
-            .3
-        );
-}
-
-
-/* =========================================
-   TITLE
-========================================= */
-
-.stage-modal h2 {
-
-    margin: 0;
-
-    font-size: 30px;
-
-    color: #243b64;
-}
-
-
-/* =========================================
-   NUMBER
-========================================= */
-
-.modal-stage-number {
-
-    margin-top: 6px;
-
-    color: #7c8ba5;
-
-    font-size: 14px;
-}
-
-
-/* =========================================
-   CONTENT
-========================================= */
-
-.modal-section {
-
-    margin-top: 18px;
-
-    padding: 15px;
-
-    border-radius: 16px;
-
-    background: #f1f5fb;
-
-    text-align: right;
-}
-
-.modal-section span {
-
-    display: block;
-
-    margin-bottom: 6px;
-
-    font-weight: bold;
-
-    color: #4f46e5;
-
-    font-size: 15px;
-}
-
-.modal-section p {
-
-    margin: 0;
-
-    color: #555;
-
-    line-height: 1.7;
-
-    font-size: 15px;
-}
-
-
-/* =========================================
-   BUTTON
-========================================= */
-
-.modal-button {
-
-    width: 100%;
-
-    margin-top: 22px;
-
-    padding: 14px;
-
-    border: none;
-
-    border-radius: 15px;
-
-    background: linear-gradient(
-        135deg,
-        #4f46e5,
-        #6366f1
-    );
-
-    color: white;
-
-    font-size: 17px;
-
-    font-weight: bold;
-
-    cursor: pointer;
-
-    box-shadow:
-        0 8px 20px rgba(
-            79,
-            70,
-            229,
-            .3
-        );
-
-    transition: .25s;
-}
-
-.modal-button:hover {
-
-    transform: translateY(-3px);
-
-    box-shadow:
-        0 12px 25px rgba(
-            79,
-            70,
-            229,
-            .4
-        );
-}
-
-
-/* =========================================
-   ANIMATIONS
-========================================= */
-
-@keyframes modalFade {
-
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
+    animation:
+        modalIn
+        0.3s
+        ease;
 
 }
 
 
-@keyframes modalPop {
+@keyframes modalIn {
 
     from {
 
@@ -312,7 +391,7 @@
 
         transform:
             translateY(30px)
-            scale(.85);
+            scale(0.9);
 
     }
 
@@ -329,29 +408,278 @@
 }
 
 
-/* =========================================
+/* =========================================================
+   CLOSE
+========================================================= */
+
+.modal-close {
+
+    position: absolute;
+
+    top: 12px;
+    right: 16px;
+
+    width: 42px;
+    height: 42px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background:
+        #F1F5F9;
+
+    color:
+        #374151;
+
+    font-size: 28px;
+
+    cursor: pointer;
+
+}
+
+
+.modal-stage-icon {
+
+    font-size: 60px;
+
+    margin-bottom: 8px;
+
+}
+
+
+.stage-modal h2 {
+
+    margin: 5px 0;
+
+    color:
+        #183B56;
+
+    font-size: 30px;
+
+}
+
+
+.modal-stage-number {
+
+    color:
+        #718096;
+
+    margin-bottom: 15px;
+
+}
+
+
+/* =========================================================
+   BADGES
+========================================================= */
+
+.latest-badge {
+
+    display: inline-block;
+
+    padding: 9px 18px;
+
+    margin-bottom: 15px;
+
+    border-radius: 20px;
+
+    background:
+        #FFF3C4;
+
+    color:
+        #A66B00;
+
+    font-weight: bold;
+
+}
+
+
+.unread-message {
+
+    padding: 12px;
+
+    margin-bottom: 15px;
+
+    border-radius: 15px;
+
+    background:
+        #FFE8E8;
+
+    color:
+        #D32F2F;
+
+    font-weight: bold;
+
+}
+
+
+/* =========================================================
+   SECTIONS
+========================================================= */
+
+.modal-section {
+
+    margin-top: 15px;
+
+    padding: 15px;
+
+    text-align: right;
+
+    border-radius: 18px;
+
+    background:
+        #F4F9FD;
+
+    border:
+        1px solid #E1EDF5;
+
+}
+
+
+.modal-section span {
+
+    display: block;
+
+    margin-bottom: 7px;
+
+    color:
+        #2076A8;
+
+    font-size: 17px;
+
+    font-weight: bold;
+
+}
+
+
+.modal-section p {
+
+    margin: 0;
+
+    color:
+        #374151;
+
+    line-height: 1.7;
+
+}
+
+
+/* =========================================================
+   BUTTON
+========================================================= */
+
+.modal-button {
+
+    width: 100%;
+
+    margin-top: 25px;
+
+    padding: 15px;
+
+    border: none;
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2196F3,
+            #1769AA
+        );
+
+    color: white;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 20px
+        rgba(33,150,243,0.3);
+
+}
+
+
+.modal-button:hover {
+
+    transform:
+        translateY(-2px);
+
+}
+
+
+/* =========================================================
    MOBILE
-========================================= */
+========================================================= */
 
-@media (max-width: 600px) {
+@media (max-width: 700px) {
 
-    .stage-modal {
+    .game-user-card {
 
-        padding: 25px;
+        transform:
+            scale(0.78);
 
-        border-radius: 22px;
+        transform-origin:
+            top left;
 
     }
 
-    .stage-modal h2 {
+
+    .game-top-buttons {
+
+        transform:
+            scale(0.75);
+
+        transform-origin:
+            top right;
+
+    }
+
+
+    .mobile-controls {
+
+        left: 12px;
+        bottom: 15px;
+
+        transform:
+            scale(0.78);
+
+        transform-origin:
+            bottom left;
+
+    }
+
+
+    .journey-message {
+
+        min-width: auto;
+
+        width: calc(100% - 180px);
+
+        bottom: 18px;
+
+        padding: 10px 15px;
+
+        font-size: 14px;
+
+        text-align: center;
+
+    }
+
+
+    .journey-message span {
 
         font-size: 25px;
 
     }
 
-    .modal-section {
 
-        padding: 12px;
+    .stage-modal {
+
+        padding: 25px 18px;
 
     }
 

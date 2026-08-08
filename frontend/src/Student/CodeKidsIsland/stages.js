@@ -3,71 +3,125 @@ const stages = [
     {
         id: 1,
         name: "Motion",
-        x: 0,
-        y: 0.45,
-        z: 6,
+        x: -5,
+        y: 0.55,
+        z: 5,
+
         status: "completed",
 
-        lesson: "تعلم حركة الشخصية",
-        explanation: "تعلم الطفل كيف يستخدم Motion في Scratch.",
-        evaluation: "جيد جداً",
-        notes: "يستطيع تحريك الشخصية بشكل صحيح."
+        lesson:
+            "تعلمنا أساسيات الحركة في البرمجة.",
+
+        explanation:
+            "تعلمنا كيف نجعل الشخصية تتحرك باستخدام الأوامر.",
+
+        evaluation:
+            "ممتاز ⭐⭐⭐",
+
+        notes:
+            "استمر في التدريب!",
+
+        read: true
     },
+
 
     {
         id: 2,
         name: "Repeat",
         x: -3,
-        y: 0.45,
-        z: 2,
+        y: 0.55,
+        z: 0,
+
         status: "completed",
 
-        lesson: "Repeat",
-        explanation: "تعلم الطفل استخدام التكرار.",
-        evaluation: "ممتاز",
-        notes: "فهم فكرة التكرار جيداً."
+        lesson:
+            "تعلمنا Repeat والتكرار.",
+
+        explanation:
+            "استخدمنا التكرار لتنفيذ نفس الأمر أكثر من مرة.",
+
+        evaluation:
+            "رائع ⭐⭐",
+
+        notes:
+            "حاول استخدام Repeat في التحديات القادمة.",
+
+        read: true
     },
+
 
     {
         id: 3,
         name: "Variables",
-        x: 2,
-        y: 0.45,
-        z: -1,
+        x: 0,
+        y: 0.55,
+        z: -3,
+
         status: "current",
 
-        lesson: "Variables",
-        explanation: "تعلم الطفل ما هي المتغيرات وكيف يستخدمها.",
-        evaluation: "جيد",
-        notes: "يحتاج إلى تدريب إضافي على تغيير قيمة المتغير."
+        lesson:
+            "تعلمنا المتغيرات Variables.",
+
+        explanation:
+            "المتغير يساعدنا على تخزين البيانات واستخدامها داخل البرنامج.",
+
+        evaluation:
+            "جيد جدًا ⭐⭐⭐",
+
+        notes:
+            "ركز على أسماء المتغيرات.",
+
+        read: false
     },
+
 
     {
         id: 4,
         name: "If",
-        x: 4,
-        y: 0.45,
-        z: -5,
+        x: 5,
+        y: 0.55,
+        z: -1,
+
         status: "locked",
 
-        lesson: "If Condition",
-        explanation: "سيتم تعلم الجمل الشرطية.",
-        evaluation: "",
-        notes: ""
+        lesson:
+            "تعلم If والشروط.",
+
+        explanation:
+            "سنتعلم كيف نجعل البرنامج يتخذ قرارًا.",
+
+        evaluation:
+            "",
+
+        notes:
+            "",
+
+        read: false
     },
+
 
     {
         id: 5,
         name: "Final Project",
-        x: 0,
-        y: 0.45,
-        z: -8,
+        x: 7,
+        y: 0.55,
+        z: 4,
+
         status: "locked",
 
-        lesson: "Final Project",
-        explanation: "المشروع النهائي.",
-        evaluation: "",
-        notes: ""
+        lesson:
+            "المشروع النهائي.",
+
+        explanation:
+            "سنستخدم كل المهارات التي تعلمناها لإنشاء مشروع كامل.",
+
+        evaluation:
+            "",
+
+        notes:
+            "",
+
+        read: false
     }
 
 ];
