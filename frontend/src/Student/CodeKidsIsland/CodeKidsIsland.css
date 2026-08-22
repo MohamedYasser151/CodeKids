@@ -2340,3 +2340,704 @@
   }
 
 }
+
+/* =========================================================
+   FONT AWESOME ICON SYSTEM
+========================================================= */
+
+.parent-report-page svg {
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+}
+
+
+/* =========================================================
+   ICON BASE
+========================================================= */
+
+.stat-icon svg,
+.brand-logo svg,
+.child-avatar svg,
+.message-icon svg,
+.loading-icon svg,
+.error-icon svg {
+
+  transition:
+    transform 0.25s ease;
+
+}
+
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.brand-logo {
+
+  position: relative;
+
+  color: white;
+
+  box-shadow:
+    0 8px 20px
+    rgba(36,116,210,0.22);
+
+}
+
+
+.brand-logo::after {
+
+  content: "";
+
+  position: absolute;
+
+  inset: -3px;
+
+  border-radius: 17px;
+
+  border: 1px solid
+    rgba(255,255,255,0.45);
+
+  pointer-events: none;
+
+}
+
+
+.brand-logo:hover svg {
+
+  transform:
+    rotate(-8deg)
+    scale(1.12);
+
+}
+
+
+/* =========================================================
+   CHILD
+========================================================= */
+
+.child-avatar {
+
+  color: #2474D2;
+
+  box-shadow:
+    inset 0 0 0 1px
+    rgba(36,116,210,0.08);
+
+}
+
+
+.child-avatar:hover svg {
+
+  transform:
+    translateY(-2px)
+    scale(1.08);
+
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.loading-icon {
+
+  width: 75px;
+  height: 75px;
+
+  margin: 0 auto 18px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 22px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #EAF4FF,
+      #F1EDFF
+    );
+
+  color: #2474D2;
+
+  font-size: 34px;
+
+  animation:
+    loadingFloat 1.8s ease-in-out infinite;
+
+}
+
+
+.loading-icon svg {
+
+  filter:
+    drop-shadow(
+      0 6px 8px
+      rgba(36,116,210,0.15)
+    );
+
+}
+
+
+@keyframes loadingFloat {
+
+  0%,
+  100% {
+
+    transform:
+      translateY(0)
+      rotate(0deg);
+
+  }
+
+  50% {
+
+    transform:
+      translateY(-7px)
+      rotate(-5deg);
+
+  }
+
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.error-icon {
+
+  width: 75px;
+  height: 75px;
+
+  margin: 0 auto 18px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 22px;
+
+  background: #FFF1F1;
+
+  color: #E05252;
+
+  font-size: 32px;
+
+}
+
+
+.error-icon svg {
+
+  animation:
+    errorPulse 1.6s ease-in-out infinite;
+
+}
+
+
+@keyframes errorPulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.08);
+  }
+
+}
+
+
+/* =========================================================
+   WELCOME ICONS
+========================================================= */
+
+.welcome-decoration {
+
+  position: relative;
+
+  padding-left: 10px;
+
+}
+
+
+.welcome-decoration div {
+
+  color: white;
+
+  box-shadow:
+    0 12px 25px
+    rgba(0,0,0,0.08);
+
+  backdrop-filter:
+    blur(5px);
+
+}
+
+
+.welcome-decoration svg {
+
+  width: 28px;
+  height: 28px;
+
+}
+
+
+.welcome-icon-book {
+
+  animation:
+    welcomeBook 3s ease-in-out infinite;
+
+}
+
+
+.welcome-icon-star {
+
+  animation:
+    welcomeStar 2.5s ease-in-out infinite;
+
+}
+
+
+.welcome-icon-rocket {
+
+  animation:
+    welcomeRocket 3s ease-in-out infinite;
+
+}
+
+
+@keyframes welcomeBook {
+
+  0%,
+  100% {
+    transform: rotate(-5deg);
+  }
+
+  50% {
+    transform:
+      translateY(-7px)
+      rotate(3deg);
+  }
+
+}
+
+
+@keyframes welcomeStar {
+
+  0%,
+  100% {
+    transform:
+      translateY(-18px)
+      rotate(5deg);
+  }
+
+  50% {
+    transform:
+      translateY(-25px)
+      rotate(-5deg);
+  }
+
+}
+
+
+@keyframes welcomeRocket {
+
+  0%,
+  100% {
+    transform: rotate(-5deg);
+  }
+
+  50% {
+    transform:
+      translateY(-9px)
+      rotate(5deg);
+  }
+
+}
+
+
+/* =========================================================
+   TITLE ICON
+========================================================= */
+
+.title-icon {
+
+  margin-right: 12px;
+
+  font-size: 0.72em;
+
+  opacity: 0.9;
+
+}
+
+
+/* =========================================================
+   STAT ICONS
+========================================================= */
+
+.stat-icon {
+
+  position: relative;
+
+  overflow: hidden;
+
+}
+
+
+.stat-icon::after {
+
+  content: "";
+
+  position: absolute;
+
+  width: 28px;
+  height: 28px;
+
+  top: -12px;
+  right: -12px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(255,255,255,0.55);
+
+}
+
+
+.stat-icon svg {
+
+  position: relative;
+
+  z-index: 2;
+
+}
+
+
+.stat-card:hover .stat-icon svg {
+
+  transform:
+    scale(1.15)
+    rotate(-5deg);
+
+}
+
+
+.stat-icon.blue {
+  color: #2474D2;
+}
+
+.stat-icon.green {
+  color: #20A464;
+}
+
+.stat-icon.yellow {
+  color: #D89A12;
+}
+
+.stat-icon.purple {
+  color: #735BE7;
+}
+
+
+/* =========================================================
+   LIVE BADGE
+========================================================= */
+
+.live-badge {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+}
+
+
+.live-dot {
+
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #22A862;
+
+  box-shadow:
+    0 0 0 4px
+    rgba(34,168,98,0.12);
+
+  animation:
+    livePulse 1.7s infinite;
+
+}
+
+
+@keyframes livePulse {
+
+  0% {
+    box-shadow:
+      0 0 0 0
+      rgba(34,168,98,0.25);
+  }
+
+  70% {
+    box-shadow:
+      0 0 0 7px
+      rgba(34,168,98,0);
+  }
+
+  100% {
+    box-shadow:
+      0 0 0 0
+      rgba(34,168,98,0);
+  }
+
+}
+
+
+/* =========================================================
+   LESSON CHIP
+========================================================= */
+
+.lesson-chip {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+}
+
+
+.lesson-chip svg {
+
+  font-size: 11px;
+
+}
+
+
+/* =========================================================
+   SUCCESS
+========================================================= */
+
+.success-icon {
+
+  margin-left: 7px;
+
+  color: #20A464;
+
+  font-size: 12px;
+
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.search-box {
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+
+}
+
+
+.search-box:focus-within {
+
+  border-color:
+    #8DBEF1;
+
+  box-shadow:
+    0 0 0 4px
+    rgba(36,116,210,0.07);
+
+}
+
+
+.search-icon {
+
+  color: #8FA0B1;
+
+  font-size: 14px;
+
+}
+
+
+/* =========================================================
+   FILTER BUTTON ICONS
+========================================================= */
+
+.filter-buttons button {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 6px;
+
+}
+
+
+.filter-buttons button svg {
+
+  font-size: 11px;
+
+}
+
+
+/* =========================================================
+   PRIMARY BUTTON
+========================================================= */
+
+.primary-report-button {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 9px;
+
+}
+
+
+.primary-report-button svg {
+
+  transition:
+    transform 0.2s ease;
+
+}
+
+
+.primary-report-button:hover svg {
+
+  transform:
+    translateX(-4px);
+
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.empty-icon {
+
+  width: 76px;
+  height: 76px;
+
+  margin: 0 auto 18px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 24px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #EAF4FF,
+      #F0ECFF
+    );
+
+  color: #2474D2;
+
+  font-size: 30px;
+
+}
+
+
+.empty-reports:hover .empty-icon svg {
+
+  transform:
+    translateY(-4px)
+    rotate(-4deg);
+
+}
+
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+.message-icon {
+
+  color: #2474D2;
+
+}
+
+
+.message-icon svg {
+
+  transition:
+    transform 0.25s ease;
+
+}
+
+
+.parent-message:hover
+.message-icon svg {
+
+  transform:
+    scale(1.12)
+    rotate(-6deg);
+
+}
+
+
+/* =========================================================
+   RESPONSIVE ICONS
+========================================================= */
+
+@media (max-width: 550px) {
+
+  .brand-logo {
+
+    width: 43px;
+    height: 43px;
+
+    border-radius: 13px;
+
+  }
+
+
+  .child-avatar {
+
+    width: 42px;
+    height: 42px;
+
+  }
+
+
+  .loading-icon,
+  .error-icon {
+
+    width: 65px;
+    height: 65px;
+
+  }
+
+
+  .welcome-decoration {
+
+    display: none;
+
+  }
+
+}

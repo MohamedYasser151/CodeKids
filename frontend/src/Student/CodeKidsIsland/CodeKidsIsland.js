@@ -19,6 +19,36 @@ import {
 } from "./utils/reportUtils";
 
 
+// =====================================================
+// FONT AWESOME
+// =====================================================
+
+import {
+  FontAwesomeIcon
+} from "@fortawesome/react-fontawesome";
+
+import {
+  faBook,
+  faGamepad,
+  faTrophy,
+  faStar,
+  faLightbulb,
+  faBrain,
+  faRocket,
+  faCode,
+  faPuzzlePiece,
+  faCalendarCheck,
+  faBug,
+  faFire,
+  faGlobe,
+  faChartLine
+} from "@fortawesome/free-solid-svg-icons";
+
+
+// =====================================================
+// COMPONENT
+// =====================================================
+
 function CodeKidsIsland() {
 
   const [
@@ -58,266 +88,246 @@ function CodeKidsIsland() {
 
 
   // =====================================================
-  // LOAD LOGGED STUDENT + REPORTS
+  // LOAD REPORTS
   // =====================================================
 
- useEffect(() => {
+  useEffect(() => {
 
-  let mounted = true;
+    let mounted = true;
 
-
-  const loadReports = async () => {
-
-    try {
-
-      setLoading(true);
-      setError("");
-
-
-      // =================================================
-      // GET USER
-      // =================================================
-
-      const savedUser =
-        localStorage.getItem("userck");
-
-
-
-      // =================================================
-      // NO USER
-      // =================================================
-
-      if (!savedUser) {
-
-        if (mounted) {
-
-          setError(
-            "لم يتم العثور على بيانات تسجيل الدخول."
-          );
-
-          setLoading(false);
-
-        }
-
-        return;
-
-      }
-
-
-      // =================================================
-      // PARSE
-      // =================================================
-
-      let user;
-
+    const loadReports = async () => {
 
       try {
 
-        user =
-          JSON.parse(savedUser);
+        setLoading(true);
+        setError("");
+
+
+        // =================================================
+        // GET USER
+        // =================================================
+
+        const savedUser =
+          localStorage.getItem("userck");
+
+
+        // =================================================
+        // NO USER
+        // =================================================
+
+        if (!savedUser) {
+
+          if (mounted) {
+
+            setError(
+              "لم يتم العثور على بيانات تسجيل الدخول."
+            );
+
+            setLoading(false);
+
+          }
+
+          return;
+
+        }
+
+
+        // =================================================
+        // PARSE USER
+        // =================================================
+
+        let user;
+
+        try {
+
+          user =
+            JSON.parse(savedUser);
+
+        }
+
+        catch (parseError) {
+
+          console.error(
+            "❌ USER PARSE ERROR:",
+            parseError
+          );
+
+          localStorage.removeItem(
+            "userck"
+          );
+
+          if (mounted) {
+
+            setError(
+              "بيانات تسجيل الدخول غير صحيحة."
+            );
+
+            setLoading(false);
+
+          }
+
+          return;
+
+        }
+
+
+        // =================================================
+        // VALIDATE USER
+        // =================================================
+
+        if (
+          !user ||
+          !user.username ||
+          !user.code
+        ) {
+
+          if (mounted) {
+
+            setError(
+              "بيانات تسجيل الدخول غير مكتملة."
+            );
+
+            setLoading(false);
+
+          }
+
+          return;
+
+        }
+
+
+        // =================================================
+        // EXPIRATION
+        // =================================================
+
+        if (
+          user.expire &&
+          Date.now() >
+          Number(user.expire)
+        ) {
+
+          localStorage.removeItem(
+            "userck"
+          );
+
+          if (mounted) {
+
+            setError(
+              "انتهت جلسة تسجيل الدخول. يرجى تسجيل الدخول مرة أخرى."
+            );
+
+            setLoading(false);
+
+          }
+
+          return;
+
+        }
+
+
+        // =================================================
+        // SET STUDENT
+        // =================================================
+
+        if (mounted) {
+
+          setStudent({
+
+            username:
+              user.username,
+
+            code:
+              user.code
+
+          });
+
+        }
+
+
+        // =================================================
+        // LOAD REPORTS
+        // =================================================
+
+        const url =
+          `/reports/student/${encodeURIComponent(
+            user.username
+          )}/${encodeURIComponent(
+            user.code
+          )}`;
+
+
+        console.log(
+          "🌐 REPORT URL:",
+          url
+        );
+
+
+        const response =
+          await api.get(url);
+
+
+        // =================================================
+        // RESPONSE ERROR
+        // =================================================
+
+        if (
+          !response.data ||
+          !response.data.success
+        ) {
+
+          if (mounted) {
+
+            setError(
+              response.data?.message ||
+              "تعذر تحميل التقرير."
+            );
+
+          }
+
+          return;
+
+        }
+
+
+        // =================================================
+        // REPORTS
+        // =================================================
+
+        const rawReports =
+          Array.isArray(
+            response.data.reports
+          )
+            ? response.data.reports
+            : [];
+
+
+        const normalizedReports =
+          rawReports.map(
+            (report, index) =>
+              normalizeReport(
+                report,
+                index
+              )
+          );
+
+
+        if (mounted) {
+
+          setReports(
+            normalizedReports
+          );
+
+        }
 
       }
 
-      catch (error) {
+      catch (err) {
 
         console.error(
-          "❌ USER PARSE ERROR:",
-          error
+          "🔥 LOAD REPORTS ERROR:",
+          err
         );
 
-
-        localStorage.removeItem(
-          "userck"
-        );
-
-
-        if (mounted) {
-
-          setError(
-            "بيانات تسجيل الدخول غير صحيحة."
-          );
-
-          setLoading(false);
-
-        }
-
-        return;
-
-      }
-
-
-   
-
-
-      // =================================================
-      // VALIDATE
-      // =================================================
-
-      if (
-        !user ||
-        !user.username ||
-        !user.code
-      ) {
-
-       
-
-
-        if (mounted) {
-
-          setError(
-            "بيانات تسجيل الدخول غير مكتملة."
-          );
-
-          setLoading(false);
-
-        }
-
-        return;
-
-      }
-
-
-      // =================================================
-      // EXPIRATION
-      // =================================================
-
-      if (
-        user.expire &&
-        Date.now() >
-        Number(user.expire)
-      ) {
-
-    
-
-
-        localStorage.removeItem(
-          "userck"
-        );
-
-
-        if (mounted) {
-
-          setError(
-            "انتهت جلسة تسجيل الدخول. يرجى تسجيل الدخول مرة أخرى."
-          );
-
-          setLoading(false);
-
-        }
-
-        return;
-
-      }
-
-
-      // =================================================
-      // SET STUDENT
-      // =================================================
-
-      if (mounted) {
-
-        setStudent({
-
-          username:
-            user.username,
-
-          code:
-            user.code
-
-        });
-
-      }
-
-
-     
-
-
-      // =================================================
-      // LOAD REPORTS
-      // =================================================
-
-      const url =
-        `/reports/student/${encodeURIComponent(
-          user.username
-        )}/${encodeURIComponent(
-          user.code
-        )}`;
-
-
-      
-
-      const response =
-        await api.get(url);
-
-
-     
-
-      // =================================================
-      // RESPONSE ERROR
-      // =================================================
-
-      if (
-        !response.data ||
-        !response.data.success
-      ) {
-
-        if (mounted) {
-
-          setError(
-            response.data?.message ||
-            "تعذر تحميل التقرير."
-          );
-
-        }
-
-        return;
-
-      }
-
-
-      // =================================================
-      // REPORTS
-      // =================================================
-
-      const rawReports =
-        Array.isArray(
-          response.data.reports
-        )
-          ? response.data.reports
-          : [];
-
-
-
-
-      const normalizedReports =
-        rawReports.map(
-          (report, index) =>
-            normalizeReport(
-              report,
-              index
-            )
-        );
-
-
-      if (mounted) {
-
-        setReports(
-          normalizedReports
-        );
-
-      }
-
-    }
-
-    catch (err) {
-
-      console.error(
-        "🔥 LOAD REPORTS ERROR:",
-        err
-      );
-
-
-      if (mounted) {
 
         if (
           err.response
@@ -331,37 +341,39 @@ function CodeKidsIsland() {
         }
 
 
-        setError(
-          "تعذر تحميل التقرير."
-        );
+        if (mounted) {
+
+          setError(
+            "تعذر تحميل التقرير."
+          );
+
+        }
 
       }
 
-    }
+      finally {
 
-    finally {
+        if (mounted) {
 
-      if (mounted) {
+          setLoading(false);
 
-        setLoading(false);
+        }
 
       }
 
-    }
-
-  };
+    };
 
 
-  loadReports();
+    loadReports();
 
 
-  return () => {
+    return () => {
 
-    mounted = false;
+      mounted = false;
 
-  };
+    };
 
-}, []);
+  }, []);
 
 
   // =====================================================
@@ -380,15 +392,27 @@ function CodeKidsIsland() {
         <div className="report-loading">
 
           <div className="loading-icon">
-            📚
+
+            <FontAwesomeIcon
+              icon={faBook}
+            />
+
           </div>
+
 
           <h2>
             جاري تحميل التقرير...
           </h2>
 
+
           <p>
-            لحظات ونجهز لك رحلة التعلم 🚀
+
+            لحظات ونجهز لك رحلة التعلم{" "}
+
+            <FontAwesomeIcon
+              icon={faRocket}
+            />
+
           </p>
 
         </div>
@@ -416,16 +440,23 @@ function CodeKidsIsland() {
         <div className="report-error">
 
           <div className="error-icon">
-            ⚠️
+
+            <FontAwesomeIcon
+              icon={faBug}
+            />
+
           </div>
+
 
           <h2>
             تعذر تحميل التقرير
           </h2>
 
+
           <p>
             {error}
           </p>
+
 
           <button
             type="button"
@@ -433,7 +464,13 @@ function CodeKidsIsland() {
               window.location.reload()
             }
           >
+
             إعادة المحاولة
+
+            <FontAwesomeIcon
+              icon={faRocket}
+            />
+
           </button>
 
         </div>
@@ -498,29 +535,41 @@ function CodeKidsIsland() {
           );
 
 
-        if (filter === "all") {
+        if (
+          filter === "all"
+        ) {
 
           return matchesSearch;
 
         }
 
 
-        if (filter === "excellent") {
+        if (
+          filter === "excellent"
+        ) {
 
           return (
             matchesSearch &&
-            Number(report.rating) >= 4
+            Number(
+              report.rating
+            ) >= 4
           );
 
         }
 
 
-        if (filter === "good") {
+        if (
+          filter === "good"
+        ) {
 
           return (
             matchesSearch &&
-            Number(report.rating) >= 3 &&
-            Number(report.rating) < 4
+            Number(
+              report.rating
+            ) >= 3 &&
+            Number(
+              report.rating
+            ) < 4
           );
 
         }
@@ -545,10 +594,14 @@ function CodeKidsIsland() {
 
       ? (
           reports.reduce(
-            (sum, report) =>
+            (
+              sum,
+              report
+            ) =>
               sum +
               Number(
-                report.rating || 0
+                report.rating ||
+                0
               ),
             0
           ) /
@@ -565,7 +618,8 @@ function CodeKidsIsland() {
           ...reports.map(
             report =>
               Number(
-                report.rating || 0
+                report.rating ||
+                0
               )
           )
         )
@@ -581,7 +635,9 @@ function CodeKidsIsland() {
   // EMPTY
   // =====================================================
 
-  if (reports.length === 0) {
+  if (
+    reports.length === 0
+  ) {
 
     return (
 
@@ -595,8 +651,13 @@ function CodeKidsIsland() {
           <div className="brand">
 
             <div className="brand-logo">
-              💻
+
+              <FontAwesomeIcon
+                icon={faCode}
+              />
+
             </div>
+
 
             <div>
 
@@ -618,8 +679,13 @@ function CodeKidsIsland() {
             <div className="parent-profile">
 
               <div className="child-avatar">
-                👦
+
+                <FontAwesomeIcon
+                  icon={faBrain}
+                />
+
               </div>
+
 
               <div>
 
@@ -645,12 +711,18 @@ function CodeKidsIsland() {
           <section className="empty-reports">
 
             <div>
-              📚
+
+              <FontAwesomeIcon
+                icon={faBook}
+              />
+
             </div>
+
 
             <h3>
               لا توجد تقارير حتى الآن
             </h3>
+
 
             <p>
               ستظهر تقارير الحصص هنا بمجرد أن
@@ -679,15 +751,22 @@ function CodeKidsIsland() {
       dir="rtl"
     >
 
-      {/* HEADER */}
+      {/* =================================================
+          HEADER
+      ================================================= */}
 
       <header className="parent-header">
 
         <div className="brand">
 
           <div className="brand-logo">
-            💻
+
+            <FontAwesomeIcon
+              icon={faCode}
+            />
+
           </div>
+
 
           <div>
 
@@ -707,8 +786,13 @@ function CodeKidsIsland() {
         <div className="parent-profile">
 
           <div className="child-avatar">
-            👦
+
+            <FontAwesomeIcon
+              icon={faBrain}
+            />
+
           </div>
+
 
           <div>
 
@@ -727,24 +811,44 @@ function CodeKidsIsland() {
       </header>
 
 
-      {/* CONTENT */}
+      {/* =================================================
+          CONTENT
+      ================================================= */}
 
       <main className="parent-content">
 
 
-        {/* WELCOME */}
+        {/* =================================================
+            WELCOME
+        ================================================= */}
 
         <section className="welcome-section">
 
           <div>
 
             <span className="welcome-label">
+
               متابعة تعليمية
+
+              {" "}
+
+              <FontAwesomeIcon
+                icon={faCalendarCheck}
+              />
+
             </span>
 
+
             <h1>
-              تقرير رحلة التعلم 📊
+
+              تقرير رحلة التعلم{" "}
+
+              <FontAwesomeIcon
+                icon={faChartLine}
+              />
+
             </h1>
+
 
             <p>
 
@@ -765,24 +869,54 @@ function CodeKidsIsland() {
 
           <div className="welcome-decoration">
 
-            <div>📚</div>
-            <div>⭐</div>
-            <div>🚀</div>
+            <div>
+
+              <FontAwesomeIcon
+                icon={faBook}
+              />
+
+            </div>
+
+
+            <div>
+
+              <FontAwesomeIcon
+                icon={faStar}
+              />
+
+            </div>
+
+
+            <div>
+
+              <FontAwesomeIcon
+                icon={faRocket}
+              />
+
+            </div>
 
           </div>
 
         </section>
 
 
-        {/* STATS */}
+        {/* =================================================
+            STATS
+        ================================================= */}
 
         <section className="stats-grid">
+
 
           <div className="stat-card">
 
             <div className="stat-icon blue">
-              📚
+
+              <FontAwesomeIcon
+                icon={faBook}
+              />
+
             </div>
+
 
             <div>
 
@@ -802,8 +936,13 @@ function CodeKidsIsland() {
           <div className="stat-card">
 
             <div className="stat-icon green">
-              ⭐
+
+              <FontAwesomeIcon
+                icon={faStar}
+              />
+
             </div>
+
 
             <div>
 
@@ -823,8 +962,13 @@ function CodeKidsIsland() {
           <div className="stat-card">
 
             <div className="stat-icon yellow">
-              🏆
+
+              <FontAwesomeIcon
+                icon={faTrophy}
+              />
+
             </div>
+
 
             <div>
 
@@ -844,8 +988,13 @@ function CodeKidsIsland() {
           <div className="stat-card">
 
             <div className="stat-icon purple">
-              🚀
+
+              <FontAwesomeIcon
+                icon={faRocket}
+              />
+
             </div>
+
 
             <div>
 
@@ -854,10 +1003,12 @@ function CodeKidsIsland() {
               </span>
 
               <strong>
+
                 {todayReport
                   ? "حديثة"
                   : "-"
                 }
+
               </strong>
 
             </div>
@@ -867,7 +1018,9 @@ function CodeKidsIsland() {
         </section>
 
 
-        {/* TODAY */}
+        {/* =================================================
+            TODAY
+        ================================================= */}
 
         {todayReport && (
 
@@ -887,14 +1040,23 @@ function CodeKidsIsland() {
 
               </div>
 
+
               <div className="live-badge">
-                ● محدث
+
+                <FontAwesomeIcon
+                  icon={faFire}
+                />
+
+                {" "}
+                محدث
+
               </div>
 
             </div>
 
 
             <div className="today-layout">
+
 
               <div className="today-score">
 
@@ -904,9 +1066,11 @@ function CodeKidsIsland() {
                   }
                 />
 
+
                 <strong>
                   {todayReport.level}
                 </strong>
+
 
                 <span>
                   تقييم المدرس
@@ -919,23 +1083,29 @@ function CodeKidsIsland() {
 
                 <div className="lesson-chip">
 
-                  📚{" "}
+                  <FontAwesomeIcon
+                    icon={faBook}
+                  />
+
+                  {" "}
+
                   {todayReport.course}
 
                 </div>
+
 
                 <h3>
                   {todayReport.lesson}
                 </h3>
 
+
                 <p>
-
                   {todayReport.evaluationText}
-
                 </p>
 
 
                 <div className="quick-info">
+
 
                   <div>
 
@@ -943,9 +1113,14 @@ function CodeKidsIsland() {
                       ماذا تعلم الطفل؟
                     </span>
 
+
                     <strong>
 
-                      ✓{" "}
+                      <FontAwesomeIcon
+                        icon={faCalendarCheck}
+                      />
+
+                      {" "}
 
                       {todayReport.learned
                         ? "تم تسجيل التعلم"
@@ -963,7 +1138,18 @@ function CodeKidsIsland() {
                       ملاحظات
                     </span>
 
+
                     <strong>
+
+                      <FontAwesomeIcon
+                        icon={
+                          todayReport.notes.length > 0
+                            ? faLightbulb
+                            : faBook
+                        }
+                      />
+
+                      {" "}
 
                       {todayReport.notes.length > 0
                         ? "متوفرة"
@@ -973,6 +1159,7 @@ function CodeKidsIsland() {
                     </strong>
 
                   </div>
+
 
                 </div>
 
@@ -989,9 +1176,9 @@ function CodeKidsIsland() {
 
                   عرض تقرير الحصة
 
-                  <span>
-                    ←
-                  </span>
+                  <FontAwesomeIcon
+                    icon={faRocket}
+                  />
 
                 </button>
 
@@ -1004,7 +1191,9 @@ function CodeKidsIsland() {
         )}
 
 
-        {/* HISTORY */}
+        {/* =================================================
+            HISTORY
+        ================================================= */}
 
         <section className="history-section">
 
@@ -1025,6 +1214,12 @@ function CodeKidsIsland() {
 
             <div className="report-count">
 
+              <FontAwesomeIcon
+                icon={faBook}
+              />
+
+              {" "}
+
               {filteredReports.length}
               {" "}
               تقارير
@@ -1034,13 +1229,18 @@ function CodeKidsIsland() {
           </div>
 
 
-          {/* TOOLS */}
+          {/* =================================================
+              TOOLS
+          ================================================= */}
 
           <div className="report-tools">
 
             <div className="search-box">
 
-              🔎
+              <FontAwesomeIcon
+                icon={faGlobe}
+              />
+
 
               <input
                 type="text"
@@ -1069,7 +1269,14 @@ function CodeKidsIsland() {
                   setFilter("all")
                 }
               >
+
+                <FontAwesomeIcon
+                  icon={faBook}
+                />
+
+                {" "}
                 الكل
+
               </button>
 
 
@@ -1084,7 +1291,14 @@ function CodeKidsIsland() {
                   setFilter("excellent")
                 }
               >
+
+                <FontAwesomeIcon
+                  icon={faTrophy}
+                />
+
+                {" "}
                 ممتاز
+
               </button>
 
 
@@ -1099,7 +1313,14 @@ function CodeKidsIsland() {
                   setFilter("good")
                 }
               >
+
+                <FontAwesomeIcon
+                  icon={faStar}
+                />
+
+                {" "}
                 جيد جدًا
+
               </button>
 
             </div>
@@ -1107,7 +1328,9 @@ function CodeKidsIsland() {
           </div>
 
 
-          {/* REPORTS */}
+          {/* =================================================
+              REPORTS
+          ================================================= */}
 
           <div className="reports-grid">
 
@@ -1136,12 +1359,18 @@ function CodeKidsIsland() {
             <div className="empty-reports">
 
               <div>
-                📚
+
+                <FontAwesomeIcon
+                  icon={faBook}
+                />
+
               </div>
+
 
               <h3>
                 لا توجد تقارير أخرى
               </h3>
+
 
               <p>
                 ستظهر هنا تقارير الحصص السابقة
@@ -1155,19 +1384,27 @@ function CodeKidsIsland() {
         </section>
 
 
-        {/* FOOTER */}
+        {/* =================================================
+            FOOTER
+        ================================================= */}
 
         <section className="parent-message">
 
           <div className="message-icon">
-            💙
+
+            <FontAwesomeIcon
+              icon={faLightbulb}
+            />
+
           </div>
+
 
           <div>
 
             <strong>
               كل حصة هي خطوة جديدة
             </strong>
+
 
             <p>
               نتابع تطور الطفل خطوة بخطوة،
@@ -1181,7 +1418,9 @@ function CodeKidsIsland() {
       </main>
 
 
-      {/* FULL REPORT */}
+      {/* =================================================
+          FULL REPORT
+      ================================================= */}
 
       {selectedReport && (
 
@@ -1201,5 +1440,6 @@ function CodeKidsIsland() {
   );
 
 }
+
 
 export default CodeKidsIsland;
