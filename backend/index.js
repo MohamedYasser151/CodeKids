@@ -34,6 +34,18 @@ app.use(cookieParser());
 //   database: "codekids",
 // });
 
+// const db = mysql.createPool({
+//   host: "localhost",
+//   user: "root",
+//   password: "",
+//   database: "codekids",
+
+//   waitForConnections: true,
+//   connectionLimit: 10,
+//   queueLimit: 0
+// });
+
+
 const db = mysql.createPool({
     host: process.env.MYSQLHOST,
     user: process.env.MYSQLUSER,
@@ -81,6 +93,675 @@ db.getConnection((err, conn) => {
 //     });
 //   });
 // });
+
+// REPORTS
+app.get("/admin/users", (req, res) => {
+
+  const sql = "SELECT id, username, code FROM login";
+
+  db.query(sql, (err, result) => {
+
+    if (err)
+      return res.status(500).json(err);
+
+    res.json(result);
+
+  });
+
+});
+
+// =====================================================
+// GET STUDENTS FOR REPORTS
+// =====================================================
+
+app.get("/admin/report-students", (req, res) => {
+
+  const sql = `
+    SELECT
+      id,
+      username,
+      code
+    FROM login
+    ORDER BY username ASC
+  `;
+
+  db.query(sql, (err, result) => {
+
+    if (err) {
+
+      console.log("REPORT STUDENTS ERROR:", err);
+
+      return res.status(500).json({
+        success: false,
+        message: "Failed to load students"
+      });
+
+    }
+
+    res.json({
+      success: true,
+      students: result
+    });
+
+  });
+
+});
+
+
+
+// =====================================================
+// CREATE LESSON REPORT
+// =====================================================
+
+app.post("/admin/reports", (req, res) => {
+
+  const {
+    student_id,
+    student_code,
+    student_name,
+    course,
+    lesson_title,
+    lesson_content,
+    what_learned,
+    evaluation,
+    teacher_notes,
+    rating,
+    report_date
+  } = req.body;
+
+
+  // ==========================================
+  // VALIDATION
+  // ==========================================
+
+  if (!student_code) {
+
+    return res.status(400).json({
+      success: false,
+      message: "Student code is required"
+    });
+
+  }
+
+
+  if (!student_name) {
+
+    return res.status(400).json({
+      success: false,
+      message: "Student name is required"
+    });
+
+  }
+
+
+  if (!course) {
+
+    return res.status(400).json({
+      success: false,
+      message: "Course is required"
+    });
+
+  }
+
+
+  if (!lesson_title) {
+
+    return res.status(400).json({
+      success: false,
+      message: "Lesson title is required"
+    });
+
+  }
+
+
+  // ==========================================
+  // RATING VALIDATION
+  // ==========================================
+
+  if (
+    rating !== null &&
+    rating !== undefined &&
+    rating !== "" &&
+    (
+      Number(rating) < 1 ||
+      Number(rating) > 5
+    )
+  ) {
+
+    return res.status(400).json({
+      success: false,
+      message: "Rating must be between 1 and 5"
+    });
+
+  }
+
+
+  // ==========================================
+  // DATE
+  // ==========================================
+
+  const finalDate =
+    report_date ||
+    new Date()
+      .toISOString()
+      .slice(0, 10);
+
+
+  // ==========================================
+  // INSERT
+  // ==========================================
+
+  const sql = `
+    INSERT INTO lesson_reports
+    (
+      student_id,
+      student_code,
+      student_name,
+      course,
+      lesson_title,
+      lesson_content,
+      what_learned,
+      evaluation,
+      teacher_notes,
+      rating,
+      report_date
+    )
+
+    VALUES
+    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+
+
+  const values = [
+
+    student_id || null,
+
+    student_code,
+
+    student_name,
+
+    course,
+
+    lesson_title,
+
+    lesson_content || null,
+
+    what_learned || null,
+
+    evaluation || null,
+
+    teacher_notes || null,
+
+    rating || null,
+
+    finalDate
+
+  ];
+
+
+  db.query(
+    sql,
+    values,
+    (err, result) => {
+
+      if (err) {
+
+        console.log(
+          "CREATE REPORT ERROR:",
+          err
+        );
+
+        return res.status(500).json({
+          success: false,
+          message: "Failed to create report",
+          error: err
+        });
+
+      }
+
+
+      res.json({
+
+        success: true,
+
+        message:
+          "Lesson report created successfully",
+
+        report_id:
+          result.insertId
+
+      });
+
+    }
+  );
+
+});
+
+
+
+// =====================================================
+// GET STUDENT REPORTS
+// =====================================================
+
+app.get(
+  "/reports/student/:code",
+  (req, res) => {
+
+    const { code } =
+      req.params;
+
+
+    const sql = `
+      SELECT
+        id,
+        student_id,
+        student_code,
+        student_name,
+        course,
+        lesson_title,
+        lesson_content,
+        what_learned,
+        evaluation,
+        teacher_notes,
+        rating,
+        report_date,
+        created_at,
+        updated_at
+
+      FROM lesson_reports
+
+      WHERE student_code = ?
+
+      ORDER BY
+        report_date DESC,
+        id DESC
+    `;
+
+
+    db.query(
+      sql,
+      [code],
+      (err, result) => {
+
+        if (err) {
+
+          console.error(
+            "GET REPORTS ERROR:",
+            err
+          );
+
+          return res.status(500).json({
+
+            success: false,
+
+            message:
+              "Failed to load student reports"
+
+          });
+
+        }
+
+
+        return res.json({
+
+          success: true,
+
+          reports: result
+
+        });
+
+      }
+    );
+
+  }
+);
+
+
+
+
+// =====================================================
+// GET SINGLE REPORT
+// =====================================================
+
+app.get("/reports/:id", (req, res) => {
+
+  const { id } = req.params;
+
+
+  const sql = `
+    SELECT *
+    FROM lesson_reports
+    WHERE id=?
+  `;
+
+
+  db.query(
+    sql,
+    [id],
+    (err, result) => {
+
+      if (err) {
+
+        return res.status(500).json({
+          success: false,
+          message: "Failed to load report"
+        });
+
+      }
+
+
+      if (result.length === 0) {
+
+        return res.status(404).json({
+          success: false,
+          message: "Report not found"
+        });
+
+      }
+
+
+      res.json({
+
+        success: true,
+
+        report: result[0]
+
+      });
+
+    }
+  );
+
+});
+
+
+
+// =====================================================
+// UPDATE LESSON REPORT
+// =====================================================
+
+app.put("/admin/reports/:id", (req, res) => {
+
+  const { id } = req.params;
+
+
+  const {
+    course,
+    lesson_title,
+    lesson_content,
+    what_learned,
+    evaluation,
+    teacher_notes,
+    rating,
+    report_date
+  } = req.body;
+
+
+  const sql = `
+    UPDATE lesson_reports
+
+    SET
+      course=?,
+      lesson_title=?,
+      lesson_content=?,
+      what_learned=?,
+      evaluation=?,
+      teacher_notes=?,
+      rating=?,
+      report_date=?
+
+    WHERE id=?
+  `;
+
+
+  db.query(
+
+    sql,
+
+    [
+      course,
+      lesson_title,
+      lesson_content || null,
+      what_learned || null,
+      evaluation || null,
+      teacher_notes || null,
+      rating || null,
+      report_date,
+      id
+    ],
+
+    (err) => {
+
+      if (err) {
+
+        console.log(
+          "UPDATE REPORT ERROR:",
+          err
+        );
+
+        return res.status(500).json({
+          success: false,
+          message: "Failed to update report"
+        });
+
+      }
+
+
+      res.json({
+
+        success: true,
+
+        message:
+          "Report updated successfully"
+
+      });
+
+    }
+
+  );
+
+});
+// =====================================================
+// DELETE LESSON REPORT
+// =====================================================
+
+app.delete("/admin/reports/:id", (req, res) => {
+
+  const { id } = req.params;
+
+
+  db.query(
+    "DELETE FROM lesson_reports WHERE id=?",
+    [id],
+    (err, result) => {
+
+      if (err) {
+
+        console.log(
+          "DELETE REPORT ERROR:",
+          err
+        );
+
+        return res.status(500).json({
+          success: false,
+          message: "Failed to delete report"
+        });
+
+      }
+
+
+      if (result.affectedRows === 0) {
+
+        return res.status(404).json({
+          success: false,
+          message: "Report not found"
+        });
+
+      }
+
+
+      res.json({
+
+        success: true,
+
+        message:
+          "Report deleted successfully"
+
+      });
+
+    }
+  );
+
+});
+
+// =====================================================
+// GET STUDENT BY CODE
+// =====================================================
+
+app.get("/admin/report-student/:code", (req, res) => {
+
+  const { code } = req.params;
+
+
+  const sql = `
+    SELECT
+      id,
+      username,
+      code
+    FROM login
+    WHERE code=?
+    LIMIT 1
+  `;
+
+
+  db.query(
+    sql,
+    [code],
+    (err, result) => {
+
+      if (err) {
+
+        return res.status(500).json({
+          success: false,
+          message: "Database error"
+        });
+
+      }
+
+
+      if (result.length === 0) {
+
+        return res.status(404).json({
+          success: false,
+          message: "Student not found"
+        });
+
+      }
+
+
+      res.json({
+
+        success: true,
+
+        student: result[0]
+
+      });
+
+    }
+  );
+
+});
+// end REPORTS
+
+// =====================================================
+// GET LOGGED-IN STUDENT REPORTS
+// =====================================================
+
+app.get(
+  "/reports/student/:username/:code",
+  (req, res) => {
+
+    const username = decodeURIComponent(
+      req.params.username
+    );
+
+    const code = req.params.code;
+
+    console.log(
+      "REPORT REQUEST:",
+      username,
+      code
+    );
+
+    const sql = `
+      SELECT
+        id,
+        student_id,
+        student_code,
+        student_name,
+        course,
+        lesson_title,
+        lesson_content,
+        what_learned,
+        evaluation,
+        teacher_notes,
+        rating,
+        report_date,
+        created_at,
+        updated_at
+
+      FROM lesson_reports
+
+      WHERE
+        student_name = ?
+        AND student_code = ?
+
+      ORDER BY
+        report_date DESC,
+        id DESC
+    `;
+
+    db.query(
+      sql,
+      [
+        username,
+        code
+      ],
+      (err, result) => {
+
+        if (err) {
+
+          console.log(
+            "GET LOGGED STUDENT REPORTS ERROR:",
+            err
+          );
+
+          return res.status(500).json({
+            success: false,
+            message: "Failed to load student reports"
+          });
+
+        }
+
+
+        res.json({
+
+          success: true,
+
+          student: {
+            username,
+            code
+          },
+
+          reports: result
+
+        });
+
+      }
+    );
+
+  }
+);
+
 
 // ================= LOGIN =================
 app.post("/loginkids", (req, res) => {
@@ -213,8 +894,7 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 app.post("/videos/upload", upload.single("video"), (req, res) => {
 
-  console.log("BODY:", req.body);
-  console.log("FILE:", req.file);
+
 
   const { title, description, course } = req.body;
 
@@ -230,12 +910,10 @@ app.post("/videos/upload", upload.single("video"), (req, res) => {
     async (error, result) => {
 
       if (error) {
-        console.log("🔥 CLOUDINARY ERROR REAL:", error);
         return res.status(500).json(error);
       }
 
       if (!result) {
-        console.log("🔥 NO RESULT FROM CLOUDINARY");
         return res.status(500).json({ message: "No result" });
       }
 
@@ -257,7 +935,6 @@ db.query(
         (err) => {
 
           if (err) {
-            console.log("🔥 MYSQL ERROR:", err);
             return res.status(500).json(err);
           }
 
@@ -535,15 +1212,13 @@ app.post("/admin/login", (req, res) => {
 
   const { username, password } = req.body;
 
-  console.log(username);
-  console.log(password);
+
 
   const sql =
     "SELECT * FROM admins WHERE username=?";
 
   db.query(sql, [username], (err, result) => {
 
-    console.log(result);
 
     if (result.length === 0) {
 
@@ -558,7 +1233,6 @@ app.post("/admin/login", (req, res) => {
       result[0].password,
       (err2, response) => {
 
-        console.log(response);
 
         if (response) {
 
